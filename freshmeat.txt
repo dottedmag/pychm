@@ -4,11 +4,12 @@ Version: 0.8.2
 Release-Focus: Minor feature enhancements
 Hide: N
 Home-Page-URL: http://gnochm.sourceforge.net
-Gzipped-Tar-URL:
-ChangeLog-URL: 
+Gzipped-Tar-URL: http://sourceforge.net/project/showfiles.php?group_id=96084
 RPM-URL: http://sourceforge.net/project/showfiles.php?group_id=96084
 Debian-URL: http://chinese.alioth.debian.org/gnochm/README
 BSD-Port-URL: http://www.freshports.org/textproc/pychm/
 CVS-URL: http://cvs.sourceforge.net/viewcvs.py/gnochm/
-Changes: Improvement in the identification of index file
+Changelog-URL: http://sourceforge.net/project/shownotes.php?group_id=96084&release_id=304590
+
+Improvement in the identification of index file
 
