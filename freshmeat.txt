@@ -7,6 +7,7 @@ Home-Page-URL: http://gnochm.sourceforge.net
 Gzipped-Tar-URL:
 ChangeLog-URL: 
 RPM-URL: http://sourceforge.net/project/showfiles.php?group_id=96084
+Debian-URL: http://chinese.alioth.debian.org/gnochm/README
 BSD-Port-URL: http://www.freshports.org/textproc/pychm/
 CVS-URL: http://cvs.sourceforge.net/viewcvs.py/gnochm/
 Changes: Improvement in the identification of index file
