@@ -70,10 +70,9 @@ Installation
     RPM installation
     ----------------
 
-      Since chmlib (the C library) does not come in a RPM package, you
-      need to install pychm like this:
+      Just do (but make sure you have chmlib installed first):
 
-      rpm --nodeps -i pychm-X.X.X-X.i386.rpm
+      rpm -i pychm-X.X.X-X.i386.rpm
 
 Acknowledgements
 ----------------
@@ -90,11 +89,6 @@ FAQ
      do I do that?
   A. Modify the setup.py file and substitute src/swig_chm.c with
      src/swig_chm.i (I used SWIG 1.13.18 to develop this).
-
-  Q. I am getting this "failed dependencies - libchm.so.0" error when I
-     try to install the RPM. What have I done wrong?
-  A. Make sure you downloaded and installed chmlib first. Then look
-     at the item "RPM installation" on how to install the RPM package.
 
 License
 -------
