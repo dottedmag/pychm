@@ -29,6 +29,6 @@
    access to the CHM files information.
 '''
 __all__ = ["chm", "chmlib", "_chmlib", "extra"]
-__version__ = "0.8.0"
+__version__ = "0.8.1"
 __revision__ = "$Id$"
 
