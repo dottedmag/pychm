@@ -35,7 +35,6 @@ import extra
 import array
 import string
 import os.path
-import re
 
 charset_table = { 
     0   : 'iso8859_1',  # ANSI_CHARSET

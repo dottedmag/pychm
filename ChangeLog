@@ -1,3 +1,11 @@
+2004-04-03  Rubens Ramos  <rubensr@users.sourceforge.net>
+
+	* chm.py: removed dependency on re.
+
+2004-03-15  Rubens Ramos  <rubensr@users.sourceforge.net>
+
+	* setup.cfg: Updated build dependencies
+
 2004-02-01  Rubens Ramos  <rubensr@users.sourceforge.net>
 
 	* chm/chm.py: Added GetLCID and the codepage conversion table.
