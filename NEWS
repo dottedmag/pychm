@@ -1,4 +1,13 @@
-2003-11-23  Rubens  <rubens_ramos@yahoo.com>
+---------------------------------------------------------------------------
+0.6.0
 
-	* all: first public release.
+  * Removed IndexParser and other tree-related classes and functions from
+    chm.py (chm.chm), because the tree structure was causing memory leaks
+    in gnochm. GetIndex and GetTopics now return raw text. HTML parsing
+    is not done inside the chm package anymore.
+  * Documentation added to the Python wrappers in chm.py
+---------------------------------------------------------------------------
+0.5.0
 
+  * First public release
+---------------------------------------------------------------------------

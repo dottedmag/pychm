@@ -26,7 +26,7 @@
    The chm module provides high level access to the functionality
    included in chmlib. It encapsulates functions in the CHMFile class, and
    provides some additional features, such as the ability to obtain
-   the contents tree of a CHM file.
+   the contents tree of a CHM archive.
    
 '''
 
@@ -35,170 +35,7 @@ import array
 import string
 import os.path
 import re
-from HTMLParser import HTMLParser
 
-def print_index_tree(node, pre = ''):
-    if node == None:
-        return
-    if node.get_data() != None:
-        print pre + str(node.get_data())
-    print_index_tree(node.get_child(), pre + '  ')
-    print_index_tree(node.get_next(), pre)
-
-def get_index_path(node, path):
-    if node == None:
-        result = path
-    else:
-        aux = node.get_prev()
-        idx = 0
-        while aux != None:
-            idx += 1
-            aux = aux.get_prev()
-        npath = get_index_path(node.get_parent(), path)
-        npath.append(idx)
-        result = npath
-    return result
-
-def get_index_node_on_path(node, path):
-    if node == None:
-        return None
-    car = path[0]
-    cdr = path[1:]
-    aux = node
-    idx = 0
-    while idx < car:
-        aux = aux.get_next()
-        idx += 1
-    if cdr == []:
-        result = aux
-    else:
-        result = get_index_node_on_path(aux.get_child(), cdr)
-    return result
-
-class IndexNode:
-    parent  = None
-    next = None
-    child = None
-    data = None
-    prev = None
-    
-    def __init__(self, data):
-        self.data = data
-        
-    def set_parent(self, node):
-        self.parent = node
-
-    def set_next(self, next):
-        self.next = next
-
-    def set_prev(self, prev):
-        self.prev = prev
-
-    def set_child(self, child):
-        self.child = child
-
-    def get_parent(self):
-        return self.parent
-
-    def get_next(self):
-        return self.next
-
-    def get_prev(self):
-        return self.prev
-
-    def get_child(self):
-        return self.child
-
-    def get_data(self):
-        return self.data
-
-    def get_n_children(self):
-        num = 0;
-        aux = self.get_child()
-        while aux != None:
-            num += 1
-            aux = aux.get_next()
-        return num
-
-    def get_n_child(self, idx):
-        num = 0;
-        aux = self.get_child()
-        while aux != None and num < idx:
-            num += 1
-            aux = aux.get_next()
-        return aux
-
-    def kill(self):
-        if self.child:
-            self.child.kill()
-            self.child = None
-        if self.next:
-            self.next.kill()
-            self.next = None
-        self.data = None
-
-class IndexParser(HTMLParser):
-    "A parser for a Topics file"
-    in_obj = 0
-    name = ""
-    local = ""
-    param = ""
-    add_level = 0
-    
-    def __init__(self):
-        HTMLParser.__init__(self)
-        self.root = None
-        self.current = self.root
-        
-    def handle_starttag(self, tag, attrs):
-        if (tag == "ul"):
-            self.add_level = 1
-        elif (tag == "object"):
-            for x, y in attrs:
-                if ((x.lower() == "type") and (y.lower() == "text/sitemap")):
-                    self.in_obj = 1
-        elif ((tag.lower() == "param") and (self.in_obj == 1)):
-            for x, y in attrs:
-                if (x.lower() == "name"):
-                    self.param = y.lower()
-                elif (x.lower() == "value"):
-                    if (self.param.lower() == "name") and (self.name == ""):
-                        self.name = y.lower()
-                    elif (self.param.lower() == "local"):
-                        self.local = y.lower()
-                    elif (self.param.lower() == "merge"):
-                        self.in_obj = 0
-
-    def handle_endtag(self, tag):
-        if (tag == "ul") and self.current:
-            self.current = self.current.get_parent()
-        elif (tag == "object") and (self.in_obj == 1):
-            val = (self.name, self.local)
-            node = IndexNode(val)
-            if self.add_level == 1:
-                if self.root == None:
-                    self.root = node
-                else:
-                    node.set_parent(self.current)
-                    if not self.current:
-                        self.root.set_next(node)
-                        node.set_prev(self.root)
-                    else:
-                        self.current.set_child(node)
-                self.add_level = 0
-            else:
-                if self.current:
-                    node.set_parent(self.current.get_parent())
-                    self.current.set_next(node)
-                    node.set_prev(self.current)
-                else:
-                    node.set_prev(self.root)
-                    self.root.set_next(node)
-            self.current = node
-            self.in_obj = 0
-            self.name = ""
-            self.local = ""
-        
 class CHMFile:
     "A class to manage access to CHM files."
     filename = ""
@@ -213,6 +50,11 @@ class CHMFile:
         pass
     
     def LoadCHM(self, archiveName):
+        '''Loads a CHM archive.
+        This function will also call GetArchiveInfo to obtain information
+        such as the index file name and the topics file. It returns 1 on
+        success, and 0 if it fails.
+        '''
         if (self.filename != None):
             self.CloseCHM()
 
@@ -226,10 +68,25 @@ class CHMFile:
         return 1
 
     def CloseCHM(self):
+        '''Closes the CHM archive
+        This function will close the CHM file, if it is open. All variables
+        are also reset.
+        '''
         if (self.filename != None):
             chmlib.chm_close(self.file)
+            self.file = None
+            self.filename = ''
+            self.title = ""
+            self.home = "/"
+            self.index = None
+            self.topics = None
+            self.encoding = None
 
     def GetArchiveInfo(self):
+        '''Obtains information on CHM archive.
+        This function checks the /#SYSTEM file inside the CHM archive to
+        obtain the index, home page, topics, encoding and title
+        '''
         result, ui = chmlib.chm_resolve_object(self.file, '/#SYSTEM')
         if (result != chmlib.CHM_RESOLVE_SUCCESS):
             print 'GetArchiveInfo: #SYSTEM does not exist'
@@ -315,6 +172,10 @@ class CHMFile:
         return 1
 
     def GetTopicsTree(self):
+        '''Reads and returns the topics tree
+        This auxiliary function reads and returns the topics tree file
+        contents for the CHM archive.
+        '''
         if (self.topics == None):
             return None
 
@@ -327,12 +188,13 @@ class CHMFile:
         if (size == 0):
             print 'GetTopicsTree: file size = 0'
             return None
-
-        parser = IndexParser()
-        parser.feed(text)
-        return parser.root
+        return text
 
     def GetIndex(self):
+        '''Reads and returns the index tree
+        This auxiliary function reads and returns the index tree file
+        contents for the CHM archive.
+        '''
         if (self.index == None):
             return None
 
@@ -345,12 +207,15 @@ class CHMFile:
         if (size == 0):
             print 'GetIndex: file size = 0'
             return None
-
-        parser = IndexParser()
-        parser.feed(text)
-        return parser.root
+        return text
 
     def ResolveObject(self, document):
+        '''Tries to locate a document in the archive
+        This function tries to locate the document inside the archive. It
+        returns a tuple where the first element is zero if the function
+        was successful, and the second is the UnitInfo for that document.
+        The UnitInfo is used to retrieve the document contents
+        '''
         if self.file:
             path = os.path.abspath(document)
             return chmlib.chm_resolve_object(self.file, path)
@@ -358,6 +223,11 @@ class CHMFile:
             return (1, None)
 
     def RetrieveObject(self, ui, start = -1, length = -1):
+        '''Retrieves the contents of a document
+        This function takes a UnitInfo and two optional arguments, the first
+        being the start address and the second is the length. These define
+        the amount of data to be read from the archive.
+        '''
         if self.file and ui:
             if length == -1:
                 len = ui.length
@@ -368,6 +238,7 @@ class CHMFile:
             return (0, '')
 
     def IndexSearch(self, pattern, wholewords, titleonly):
+        '''This is not working yet!'''
         if (not pattern) or pattern == '':
             return None
         r, ui = chmlib.chm_resolve_object(self.file, '/$FIftiMain')

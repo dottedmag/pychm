@@ -1,3 +1,15 @@
+2003-12-27  Rubens Ramos  <rubensr@users.sourceforge.net>
+
+	* chm.py: Added documentation to the code.
+
+	* chm.py: Removed IndexParser, it was causing memory leaks in
+	gnochm. GetIndex and GetTopics now return raw text.
+
+2003-12-21  Rubens Ramos  <rubensr@users.sourceforge.net>
+
+	* chm.py: Handle HTMLParseError exception, so we can display CHM
+	files that have malformed Topics files.
+
 2003-12-03  Rubens Ramos <rubensr@users.sourceforge.net>
 
 	* pychm: Initial version.

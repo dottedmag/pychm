@@ -1,4 +1,4 @@
-pychm 0.5.0
+pychm 0.6.0
 ===========
 
 Summary
@@ -47,7 +47,7 @@ Installation
   -------------------------
 
     If you are getting one of the source files, then all you need to do is
-    unpack it, 'cd' to the newly created 'chm-X.X.X' directory and type:
+    unpack it, 'cd' to the newly created 'pychm-X.X.X' directory and type:
 
     python setup.py install
 
@@ -59,6 +59,20 @@ Installation
     from the SWIG interface file (src/swig_chm.i), then all you need to do
     is modify the setup.py file and substitute src/swig_chm.c with
     src/swig_chm.i (I used SWIG 1.13.18 to develop this).
+
+    Tip - if the compilation is failing because your chmlib is installed
+    somewhere not visible to gcc, then you can use the cPATH and
+    LIBRARY_PATH environment variables before trying to compile:
+
+    (if you are using bash, or sh-like shells)
+    export CPATH=<directory where chmlib include files are>
+    export LIBRARY_PATH=<directory where the chmlib library is>
+
+    or
+
+    (if you are using tcsh, csh, etc)
+    setenv CPATH <directory where chmlib include files are>
+    setenv LIBRARY_PATH <directory where the chmlib library is>
 
   Installation from binaries
   --------------------------
