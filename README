@@ -8,8 +8,8 @@ Summary
 archive. It uses the functionality implemented in chmlib, a C-based
 library written by Jed Wing. Quoted from Jed's README:
 
-"chmlib is a small library designed for accessing MS ITSS files.  The
-ITSS file format is used for Microsoft Html Help files (.chm), which
+"chmlib is a small library designed for accessing MS ITSF files.  The
+ITSF file format is used for Microsoft Html Help files (.chm), which
 have been the predominant medium for software documentation from
 Microsoft during the past several years, having superceded the
 previously used .hlp file format."
@@ -29,7 +29,7 @@ previously used .hlp file format."
 Requirements
 ------------
 
-  * Python 2.2 (older versions may work, I dont know)
+  * Python >= 2.2 (older versions may work, I dont know)
   * chmlib-0.31 (this is the one I used, older/newer versions may/may not work)
   * A working C compiler if you plan to build the sources.
   * SWIG *if* you really want to regenerate the sources from the interface

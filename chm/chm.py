@@ -196,6 +196,7 @@ class CHMFile:
     index = None
     topics = None
     encoding = None
+    lcid = None
     
     def __init__(self):
         self.searchable = 0
@@ -241,7 +242,7 @@ class CHMFile:
         '''
 
         self.searchable = extra.is_searchable (self.file)
-        self.lcid = extra.get_lcid (self.file)
+        self.lcid = None
         
         result, ui = chmlib.chm_resolve_object(self.file, '/#SYSTEM')
         if (result != chmlib.CHM_RESOLVE_SUCCESS):
@@ -279,6 +280,11 @@ class CHMFile:
                 cursor = buff[index] + (buff[index+1] * 256)
                 index += 2
                 self.title = text[index:index+cursor-1]
+            elif (cursor == 4):
+                index += 2
+                cursor = buff[index] + (buff[index+1] * 256)
+                index += 2
+                self.lcid = buff[index] + (buff[index+1] * 256)
             elif (cursor == 6):
                 index += 2
                 cursor = buff[index] + (buff[index+1] * 256)
@@ -325,6 +331,10 @@ class CHMFile:
                 elif (ext == '.hhk'):
                    self.index = '/' + chunk
                 index = next + 1
+
+        if not self.lcid:
+            self.lcid = extra.get_lcid (self.file)
+
         return 1
 
     def GetTopicsTree(self):

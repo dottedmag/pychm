@@ -1,3 +1,9 @@
+2004-10-08  Rubens Ramos  <rubensr@users.sourceforge.net>
+
+	* Bug #1039336: Chinese characters can't be displayed correctly
+	  With support from Carlos Liu, enhanced support to identify
+	  character set encoding.
+
 2004-04-03  Rubens Ramos  <rubensr@users.sourceforge.net>
 
 	* chm.py: removed dependency on re.
