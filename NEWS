@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------
+0.8.0
+
+  * Added support to access the LCID from a CHM archive - this 
+    functionality is now required by gnochm 0.8.0
+---------------------------------------------------------------------------
 0.7.0
 
   * Added support to search for words inside CHM archives. This was

@@ -1,4 +1,4 @@
-pychm 0.7.0
+pychm 0.8.0
 ===========
 
 Summary
@@ -22,7 +22,7 @@ previously used .hlp file format."
   * chm.chmlib: Low level wrappers around the chmlib API, also generated
     by SWIG;
   * chm.extra: Extra utility functions - right now, it contains a 
-    function to perform full-text search.
+    function to perform full-text search support to extract LCID.
   * chm.chm: High-level support for CHM archives, using the functions
     from the modules above.
 

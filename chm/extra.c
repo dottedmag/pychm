@@ -567,6 +567,39 @@ chm_search (struct chmFile *chmfile,
   return partial;
 }
 
+typedef struct {
+  const char *file;
+  int offset;
+} Langrec;
+
+Langrec lang_files[] = {
+  {"/$FIftiMain",               0x7E},
+  {"$WWKeywordLinks/BTree",     0x34},
+  {"$WWAssociativeLinks/BTree", 0x34}
+};
+
+#define LANG_FILES_SIZE (sizeof(lang_files)/sizeof(Langrec))
+
+int
+chm_get_lcid (struct chmFile *chmfile) {
+  struct chmUnitInfo ui;
+  uint32_t lang;
+  int i;
+
+  for (i=0; i<LANG_FILES_SIZE; i++) {
+  
+    if (chm_resolve_object (chmfile, lang_files[i].file, &ui) == 
+        CHM_RESOLVE_SUCCESS) {
+    
+      if (chm_retrieve_object (chmfile, &ui, (unsigned char *) &lang, 
+                               lang_files[i].offset, sizeof(uint32_t)) != 0)
+        return lang;
+    }
+  }
+
+  return -1;
+}
+
 #ifdef __PYTHON__
 
 static PyObject *
@@ -593,6 +626,7 @@ is_searchable (PyObject *self, PyObject *args) {
     else
       return Py_BuildValue ("i", 1);
   } else {
+    PyErr_SetString(PyExc_TypeError, "Expected chmfile (not CHMFile!)");
     return NULL;
   }
 }
@@ -621,17 +655,45 @@ search (PyObject *self, PyObject *args) {
       return Py_BuildValue ("(iO)", partial, dict);
 
     } else {
+      PyErr_NoMemory();
       return NULL;
     }
   } else {
+    PyErr_SetString(PyExc_TypeError,
+                    "Expected chmfile (not CHMFile!), string, int, int");
+    return NULL;
+  }
+}
+
+static PyObject *
+get_lcid (PyObject *self, PyObject *args) {
+  int code;
+  struct chmFile *file;
+  PyObject *obj0;
+
+  if (PyArg_ParseTuple (args, "O:get_lcid", &obj0)) {
+
+      file = (struct chmFile *) PyCObject_AsVoidPtr(obj0);
+
+      code = chm_get_lcid (file);
+    
+      if (code != -1)
+        return Py_BuildValue ("i", code);
+      else 
+        Py_INCREF(Py_None);
+      return Py_None;
+  } else {
+    PyErr_SetString(PyExc_TypeError,"Expected a chmfile (not a CHMFile!)");
     return NULL;
   }
 }
 
 static PyMethodDef
 IndexMethods[] = {
+  {"get_lcid", get_lcid, METH_VARARGS, 
+   "Returns LCID (Locale ID) for archive."},
   {"search", search, METH_VARARGS, 
-   "Perform Full-Text search"},
+   "Perform Full-Text search."},
   {"is_searchable", is_searchable, METH_VARARGS, 
    "Return 1 if it is possible to search the archive, 0 otherwise."},
   {NULL, NULL, 0, NULL}
@@ -655,6 +717,7 @@ main (int argc, char **argv) {
     file = chm_open (argv[1]);
 
     if (file) {
+      printf ("\nLCID= %d (%08X)\n", chm_get_lcid(file), chm_get_lcid(file));
       while (1) {
         printf ("\n<whole_words> <titles_only> <string>\n");
         printf ("> ");

@@ -1,3 +1,12 @@
+2004-02-01  Rubens Ramos  <rubensr@users.sourceforge.net>
+
+	* chm/chm.py: Added GetLCID and the codepage conversion table.
+
+2004-01-31  Rubens Ramos  <rubensr@users.sourceforge.net>
+
+	* chm/extra.c: Added get_lcid(), to read the locale ID from the
+	CHM archives.
+
 2004-01-15  Rubens Ramos  <rubensr@users.sourceforge.net>
 
 	* chm/chm.py: Added GetEncoding, so that now gnochm can use the
