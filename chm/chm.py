@@ -197,6 +197,7 @@ class CHMFile:
     topics = None
     encoding = None
     lcid = None
+    binaryindex = None
     
     def __init__(self):
         self.searchable = 0
@@ -295,9 +296,11 @@ class CHMFile:
                     tmp2 = '/' + tmp + '.hhk'
                     res1, ui1 = chmlib.chm_resolve_object(self.file, tmp1)
                     res2, ui2 = chmlib.chm_resolve_object(self.file, tmp2)
-                    if (res1 == chmlib.CHM_RESOLVE_SUCCESS):
+                    if (not self.topics) and \
+                           (res1 == chmlib.CHM_RESOLVE_SUCCESS):
                         self.topics = '/' + tmp + '.hhc'
-                    elif (res2 == chmlib.CHM_RESOLVE_SUCCESS):
+                    if (not self.index) and \
+                           (res2 == chmlib.CHM_RESOLVE_SUCCESS):
                         self.index = '/' + tmp + '.hhk'
             elif (cursor == 16):
                 index += 2

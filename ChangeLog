@@ -1,3 +1,10 @@
+2004-11-27  Rubens Ramos  <rubensr@users.sourceforge.net>
+
+	* chm/chm.py: Bug reported by Torsten Marek <shlomme@gmx.net>:
+	When binary index is used for index/topics files, we were not
+	detecting the index file. My fix is actually a nasty hack.
+	It will need to be fixed someday - Bug #1074101.
+
 2004-10-08  Rubens Ramos  <rubensr@users.sourceforge.net>
 
 	* Bug #1039336: Chinese characters can't be displayed correctly

@@ -1,5 +1,5 @@
-pychm 0.8.1
-===========
+PyCHM
+=====
 
 Summary
 -------
@@ -30,7 +30,7 @@ Requirements
 ------------
 
   * Python >= 2.2 (older versions may work, I dont know)
-  * chmlib-0.31 (this is the one I used, older/newer versions may/may not work)
+  * chmlib
   * A working C compiler if you plan to build the sources.
   * SWIG *if* you really want to regenerate the sources from the interface
     file (but this is not needed - keep reading). To get SWIG, go to
@@ -98,6 +98,10 @@ developed by Jed Wing, and a lot of the python code used to parse the
 contents tree and to decode the index files was heavily based on the
 code implemented by Razvan Cojocaru <razvanco@gmx.net> for the xCHM
 viewer.
+
+ Bug reports:
+
+ Carlos Liu, Torsten Marek
 
 FAQ
 ---
