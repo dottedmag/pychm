@@ -1,0 +1,33 @@
+## Copyright (C) 2003 Rubens Ramos <rubensr@users.sourceforge.net>
+
+## pychm is free software; you can redistribute it and/or
+## modify it under the terms of the GNU General Public License as
+## published by the Free Software Foundation; either version 2 of the
+## License, or (at your option) any later version.
+
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
+
+## You should have received a copy of the GNU General Public
+## License along with this program; see the file COPYING.  If not,
+## write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+## Boston, MA 02111-1307, USA
+
+## $Id$
+
+'''
+   chm - A package to manipulate CHM files
+
+   The chm package provides three modules: chm, chmlib and _chmlib.
+   _chmlib and chmlib are very low level libraries generated from
+   SWIG interface files, and are simple wrappers around the API
+   defined by the C library chmlib.
+   the chm module provides some higher level classes to simplify
+   access to the CHM files information.
+'''
+__all__ = ["chm", "chmlib", "_chmlib"]
+__version__ = "0.5.0"
+__revision__ = "$Id$"
+

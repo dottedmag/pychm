@@ -1,0 +1,113 @@
+pychm 0.5.0
+===========
+
+Summary
+-------
+
+  PyCHM contains a Python package named chm to manipulate CHM files.
+
+  The chm package contains two modules, namely chm.chm and chm.chmlib. 
+chm.chmlib is a low level wrapper module around the API provided by the 
+C library chmlib, written by Jed Wing <jedwin@ugcs.caltech.edu>. Quoted 
+from Jed's README:
+
+" chmlib is a small library designed for accessing MS ITSS files.  The 
+ITSS file format is used for Microsoft Html Help files (.chm), which 
+have been the predominant medium for software documentation from Microsoft 
+during the past several years, having superceded the previously used .hlp 
+file format."
+
+ Please refer to chmlib documentation on more details of what is supported or
+not.
+
+  chm.chm provides some high level functionality over chm.chmlib, such as
+access to the .chm file contents tree.
+
+Requirements
+------------
+
+  * Python 2.2 (older versions may work, I dont know)
+  * chmlib-0.31 (this is the one I used, older/newer versions may/may not work)
+  * A working C compiler if you plan to build the sources.
+  * SWIG *if* you really want to regenerate the sources from the interface
+    file (but this is not needed - keep reading). To get SWIG, go to
+    http://www.swig.org
+
+Installation
+------------
+
+    First you need to get Python and chmlib at:
+
+    http://www.python.org
+    http://66.93.236.84/~jedwin/projects/
+
+    and install both of these packages.
+
+  Installation from sources
+  -------------------------
+
+    If you are getting one of the source files, then all you need to do is
+    unpack it, 'cd' to the newly created 'chm-X.X.X' directory and type:
+
+    python setup.py install
+
+    And that should be all. Note that you will probably need to have admin 
+    privileges to do that if you are planning to install it on the base python
+    modules directory.
+
+    If you are feeling adventurous and want to re-generate the C source file
+    from the SWIG interface file (src/swig_chm.i), then all you need to do
+    is modify the setup.py file and substitute src/swig_chm.c with
+    src/swig_chm.i (I used SWIG 1.13.18 to develop this).
+
+  Installation from binaries
+  --------------------------
+
+    Just grab your favorite binary format, and install it according to your
+    system's procedures (since you know which format you want, I am 
+    assuming you know how to install it :)
+
+    RPM installation
+    ----------------
+
+      Since chmlib (the C library) does not come in a RPM package, you
+      need to install pychm like this:
+
+      rpm --nodeps -i pychm-X.X.X-X.i386.rpm
+
+Acknowledgements
+----------------
+  This work would not have been possible without the existence of chmlib,
+developed by Jed Wing, and a lot of the python code used to parse the
+contents tree and to decode the index files was heavily based on the
+code implemented by Razvan Cojocaru <razvanco@gmx.net> for the xCHM
+viewer.
+
+FAQ
+---
+
+  Q. I want to re-generate the C source from the swig interface file! How
+     do I do that?
+  A. Modify the setup.py file and substitute src/swig_chm.c with
+     src/swig_chm.i (I used SWIG 1.13.18 to develop this).
+
+  Q. I am getting this "failed dependencies - libchm.so.0" error when I
+     try to install the RPM. What have I done wrong?
+  A. Make sure you downloaded and installed chmlib first. Then look
+     at the item "RPM installation" on how to install the RPM package.
+
+License
+-------
+
+ This library is licensed under the GPL. Please refer to the COPYING file
+for more details.
+
+Bugs
+----
+
+ If you think you found a bug, or have suggestions for improvements, you
+can contact the author at:
+
+Rubens Ramos <rubensr@users.sourceforge.net>
+
+$Id$
