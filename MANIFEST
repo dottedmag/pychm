@@ -1,7 +1,6 @@
-README
-NEWS
 COPYING
-ChangeLog
+NEWS
+README
 setup.cfg
 setup.py
 chm/__init__.py
@@ -9,3 +8,4 @@ chm/chm.py
 chm/chmlib.py
 chm/extra.c
 chm/swig_chm.c
+chm/swig_chm.i
