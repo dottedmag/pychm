@@ -1,17 +1,16 @@
-2003-12-27  Rubens Ramos  <rubensr@users.sourceforge.net>
+2004-01-15  Rubens Ramos  <rubensr@users.sourceforge.net>
 
-	* chm.py: Added documentation to the code.
+	* chm/chm.py: Added GetEncoding, so that now gnochm can use the
+	Python codecs to convert the html files from the chm archive.
 
-	* chm.py: Removed IndexParser, it was causing memory leaks in
-	gnochm. GetIndex and GetTopics now return raw text.
+2004-01-10  Rubens Ramos  <rubensr@users.sourceforge.net>
 
-2003-12-21  Rubens Ramos  <rubensr@users.sourceforge.net>
+	* chm/chm.py: Added IndexSearch
 
-	* chm.py: Handle HTMLParseError exception, so we can display CHM
-	files that have malformed Topics files.
+	* setup.py: Adding chm.extra
 
-2003-12-03  Rubens Ramos <rubensr@users.sourceforge.net>
+	* chm/extra.c, chm/__init__py: Adding support for text search.
 
-	* pychm: Initial version.
+	* ChangeLog, setup.cfg: Created a change log :)
 	
 

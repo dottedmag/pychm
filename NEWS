@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------
+0.7.0
+
+  * Added support to search for words inside CHM archives. This was
+    implemented in a separate module (chm.extra) and is used in
+    chm.chm.
+  * Added method to CHMFile to read the archive encoding, so that 
+    python codecs can be used to encode/decode contents of html files.
+---------------------------------------------------------------------------
 0.6.0
 
   * Removed IndexParser and other tree-related classes and functions from

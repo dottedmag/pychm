@@ -1,4 +1,4 @@
-## Copyright (C) 2003 Rubens Ramos <rubensr@users.sourceforge.net>
+## Copyright (C) 2003-2004 Rubens Ramos <rubensr@users.sourceforge.net>
 
 ## Based on code by:
 ## Copyright (C) 2003  Razvan Cojocaru <razvanco@gmx.net>
@@ -31,10 +31,34 @@
 '''
 
 import chmlib
+import extra
 import array
 import string
 import os.path
 import re
+
+charset_table = { 
+    0   : 'iso8859_1',  # ANSI_CHARSET
+    238 : 'iso8859_2',  # EASTEUROPE_CHARSET
+    178 : 'iso8859_6',  # ARABIC_CHARSET
+    161 : 'iso8859_7',  # GREEK_CHARSET
+    177 : 'iso8859_8',  # HEBREW_CHARSET
+    162 : 'iso8859_9',  # TURKISH_CHARSET
+    222 : 'iso8859_11', # THAI_CHARSET - hmm not in python 2.2...
+    186 : 'iso8859_13', # BALTIC_CHARSET
+    204 : 'koi8',       # RUSSIAN_CHARSET
+    255 : 'cp437',      # OEM_CHARSET
+    128 : 'cp932',      # SHIFTJIS_CHARSET
+    134 : 'cp936',      # GB2312_CHARSET
+    129 : 'cp949',      # HANGUL_CHARSET
+    136 : 'cp950',      # CHINESEBIG5_CHARSET
+    1   : None,         # DEFAULT_CHARSET
+    2   : None,         # SYMBOL_CHARSET    
+    129 : None,         # HANGEUL_CHARSET   
+    130 : None,         # JOHAB_CHARSET     
+    163 : None,         # VIETNAMESE_CHARSET
+    77  : None,         # MAC_CHARSET       
+}
 
 class CHMFile:
     "A class to manage access to CHM files."
@@ -47,7 +71,7 @@ class CHMFile:
     encoding = None
     
     def __init__(self):
-        pass
+        self.searchable = 0
     
     def LoadCHM(self, archiveName):
         '''Loads a CHM archive.
@@ -68,7 +92,7 @@ class CHMFile:
         return 1
 
     def CloseCHM(self):
-        '''Closes the CHM archive
+        '''Closes the CHM archive.
         This function will close the CHM file, if it is open. All variables
         are also reset.
         '''
@@ -85,8 +109,12 @@ class CHMFile:
     def GetArchiveInfo(self):
         '''Obtains information on CHM archive.
         This function checks the /#SYSTEM file inside the CHM archive to
-        obtain the index, home page, topics, encoding and title
+        obtain the index, home page, topics, encoding and title. It is called
+        from LoadCHM.
         '''
+
+        self.searchable = extra.is_searchable (self.file)
+
         result, ui = chmlib.chm_resolve_object(self.file, '/#SYSTEM')
         if (result != chmlib.CHM_RESOLVE_SUCCESS):
             print 'GetArchiveInfo: #SYSTEM does not exist'
@@ -172,7 +200,7 @@ class CHMFile:
         return 1
 
     def GetTopicsTree(self):
-        '''Reads and returns the topics tree
+        '''Reads and returns the topics tree.
         This auxiliary function reads and returns the topics tree file
         contents for the CHM archive.
         '''
@@ -191,7 +219,7 @@ class CHMFile:
         return text
 
     def GetIndex(self):
-        '''Reads and returns the index tree
+        '''Reads and returns the index tree.
         This auxiliary function reads and returns the index tree file
         contents for the CHM archive.
         '''
@@ -210,7 +238,7 @@ class CHMFile:
         return text
 
     def ResolveObject(self, document):
-        '''Tries to locate a document in the archive
+        '''Tries to locate a document in the archive.
         This function tries to locate the document inside the archive. It
         returns a tuple where the first element is zero if the function
         was successful, and the second is the UnitInfo for that document.
@@ -223,7 +251,7 @@ class CHMFile:
             return (1, None)
 
     def RetrieveObject(self, ui, start = -1, length = -1):
-        '''Retrieves the contents of a document
+        '''Retrieves the contents of a document.
         This function takes a UnitInfo and two optional arguments, the first
         being the start address and the second is the length. These define
         the amount of data to be read from the archive.
@@ -237,27 +265,36 @@ class CHMFile:
         else:
             return (0, '')
 
-    def IndexSearch(self, pattern, wholewords, titleonly):
-        '''This is not working yet!'''
-        if (not pattern) or pattern == '':
+    def Search(self, text, wholewords=0, titleonly=0):
+        '''Performs full-text search on the archive.
+        The first parameter is the word to look for, the second
+        indicates if the search should be for whole words only, and
+        the fourth parameter indicates if the search should be
+        restricted to page titles.
+        This method will return a tuple, the first item
+        indicating if the search results were partial, and the second
+        item being a dictionary containing the results.'''
+        if text and text != '' and self.file:
+            return extra.search (self.file, text, wholewords,
+                                 titleonly)
+        else:
             return None
-        r, ui = chmlib.chm_resolve_object(self.file, '/$FIftiMain')
-        if r:
-            return None
-        r, uitopics = chmlib.chm_resolve_object(self.file, '/#TOPICS')
-        if r:
-            return None
-        r, uistrings = chmlib.chm_resolve_object(self.file, '/#STRINGS')
-        if r:
-            return None
-        r, uiurltbl = chmlib.chm_resolve_object(self.file, '/#URLTBL')
-        if r:
-            return None
-        r, uiurlstr = chmlib.chm_resolve_object(self.file, '/#URLSTR')
-        if r:
-            return None
-        regexp = re.compile(pattern)
-        size, header = chmlib.chm_retrieve_object(self.file, ui, ol, 0x32)
-        if size == 0:
-            return None
+
+    def IsSearchable(self):
+        '''Indicates if the full-text search is available for this
+        archive - this flag is updated when GetArchiveInfo is called'''
+        return self.searchable
+
+    def GetEncoding(self):
+        '''Returns a string that can be used with the codecs python package
+        to encode or decode the files in the chm archive. If an error is
+        found, or if it is not possible to find the encoding, None is
+        returned.'''
+        if self.encoding:
+            vals = string.split(self.encoding, ',')
+            if len(vals) > 2:
+                try:
+                    return charset_table[int(vals[2])]
+                except KeyError:
+                    pass
         return None

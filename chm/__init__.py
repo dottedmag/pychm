@@ -1,4 +1,4 @@
-## Copyright (C) 2003 Rubens Ramos <rubensr@users.sourceforge.net>
+## Copyright (C) 2003-2004 Rubens Ramos <rubensr@users.sourceforge.net>
 
 ## pychm is free software; you can redistribute it and/or
 ## modify it under the terms of the GNU General Public License as
@@ -20,14 +20,15 @@
 '''
    chm - A package to manipulate CHM files
 
-   The chm package provides three modules: chm, chmlib and _chmlib.
-   _chmlib and chmlib are very low level libraries generated from
-   SWIG interface files, and are simple wrappers around the API
+   The chm package provides four modules: chm, chmlib, extra and
+   _chmlib. _chmlib and chmlib are very low level libraries generated
+   from  SWIG interface files, and are simple wrappers around the API
    defined by the C library chmlib.
+   The extra module adds full-text search support.
    the chm module provides some higher level classes to simplify
    access to the CHM files information.
 '''
-__all__ = ["chm", "chmlib", "_chmlib"]
-__version__ = "0.6.0"
+__all__ = ["chm", "chmlib", "_chmlib", "extra"]
+__version__ = "0.7.0"
 __revision__ = "$Id$"
 
