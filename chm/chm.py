@@ -1,4 +1,4 @@
-## Copyright (C) 2003-2004 Rubens Ramos <rubensr@users.sourceforge.net>
+## Copyright (C) 2003-2005 Rubens Ramos <rubensr@users.sourceforge.net>
 
 ## Based on code by:
 ## Copyright (C) 2003  Razvan Cojocaru <razvanco@gmx.net>
@@ -400,8 +400,12 @@ class CHMFile:
         if self.file and ui:
             if length == -1:
                 len = ui.length
+            else:
+                len = length
             if start == -1:
                 st = 0l
+            else:
+                st = long(start)
             return chmlib.chm_retrieve_object(self.file, ui, st, len)
         else:
             return (0, '')

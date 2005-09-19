@@ -1,3 +1,10 @@
+2005-09-19  Rubens Ramos  <rubensr@users.sourceforge.net>
+
+	* chm/__init__py: Updated version number (forgot to do it last release)
+
+	* chm/chm.py: Bug reported by Fredrik de Vibe (#1292939) - 
+	cannot override default params to chm.chm.RetrieveObject().
+
 2004-11-27  Rubens Ramos  <rubensr@users.sourceforge.net>
 
 	* chm/chm.py: Bug reported by Torsten Marek <shlomme@gmx.net>:
