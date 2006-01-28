@@ -1,4 +1,4 @@
-## Copyright (C) 2003-2005 Rubens Ramos <rubensr@users.sourceforge.net>
+## Copyright (C) 2003-2006 Rubens Ramos <rubensr@users.sourceforge.net>
 
 ## Based on code by:
 ## Copyright (C) 2003  Razvan Cojocaru <razvanco@gmx.net>
@@ -45,7 +45,7 @@ charset_table = {
     162 : 'iso8859_9',  # TURKISH_CHARSET
     222 : 'iso8859_11', # THAI_CHARSET - hmm not in python 2.2...
     186 : 'iso8859_13', # BALTIC_CHARSET
-    204 : 'koi8',       # RUSSIAN_CHARSET
+    204 : 'cp1251',     # RUSSIAN_CHARSET
     255 : 'cp437',      # OEM_CHARSET
     128 : 'cp932',      # SHIFTJIS_CHARSET
     134 : 'cp936',      # GB2312_CHARSET
@@ -79,10 +79,10 @@ locale_table = {
     0x4001 : ('iso8859_6', "Arabic_Qatar", "Arabic"),
     0x042b : (None,        "Armenian","Armenian"),
     0x042c : ('iso8859_9', "Azeri_Latin", "Turkish"),
-    0x082c : ('koi8',      "Azeri_Cyrillic", "Cyrillic"),
+    0x082c : ('cp1251',    "Azeri_Cyrillic", "Cyrillic"),
     0x042d : ('iso8859_1', "Basque", "Western Europe & US"),
-    0x0423 : ('koi8',      "Belarusian", "Cyrillic"),
-    0x0402 : ('koi8',      "Bulgarian", "Cyrillic"),
+    0x0423 : ('cp1251',    "Belarusian", "Cyrillic"),
+    0x0402 : ('cp1251',    "Bulgarian", "Cyrillic"),
     0x0403 : ('iso8859_1', "Catalan", "Western Europe & US"),
     0x0404 : ('cp950',     "Chinese_Taiwan", "Traditional Chinese"),
     0x0804 : ('cp936',     "Chinese_PRC", "Simplified Chinese"),
@@ -132,12 +132,12 @@ locale_table = {
     0x0410 : ('iso8859_1', "Italian_Standard", "Western Europe & US"),
     0x0810 : ('iso8859_1', "Italian_Swiss", "Western Europe & US"),
     0x0411 : ('cp932',     "Japanese", "Japanese"),
-    0x043f : ('koi8',      "Kazakh", "Cyrillic"),
+    0x043f : ('cp1251',    "Kazakh", "Cyrillic"),
     0x0457 : (None,        "Konkani", "Indic"),
     0x0412 : ('cp949',     "Korean", "Korean"),
     0x0426 : ('iso8859_13',"Latvian", "Baltic",),
     0x0427 : ('iso8859_13',"Lithuanian", "Baltic",),
-    0x042f : ('koi8',      "Macedonian", "Cyrillic"),
+    0x042f : ('cp1251',    "Macedonian", "Cyrillic"),
     0x043e : ('iso8859_1', "Malay_Malaysia", "Western Europe & US"),
     0x083e : ('iso8859_1', "Malay_Brunei_Darussalam", "Western Europe & US"),
     0x044e : (None,        "Marathi", "Indic"),
@@ -147,10 +147,10 @@ locale_table = {
     0x0416 : ('iso8859_1', "Portuguese_Brazilian", "Western Europe & US"),
     0x0816 : ('iso8859_1', "Portuguese_Standard", "Western Europe & US"),
     0x0418 : ('iso8859_2', "Romanian", "Central Europe"),
-    0x0419 : ('koi8',      "Russian", "Cyrillic"),
+    0x0419 : ('cp1251',    "Russian", "Cyrillic"),
     0x044f : (None,        "Sanskrit", "Indic"),
     0x081a : ('iso8859_2', "Serbian_Latin", "Central Europe"),
-    0x0c1a : ('koi8',      "Serbian_Cyrillic", "Cyrillic"),
+    0x0c1a : ('cp1251',    "Serbian_Cyrillic", "Cyrillic"),
     0x041b : ('iso8859_2', "Slovak", "Central Europe"),
     0x0424 : ('iso8859_2', "Slovenian", "Central Europe"),
     0x040a : ('iso8859_1', "Spanish_Trad_Sort", "Western Europe & US"),
@@ -177,13 +177,13 @@ locale_table = {
     0x041d : ('iso8859_1', "Swedish", "Western Europe & US"),
     0x081d : ('iso8859_1', "Swedish_Finland", "Western Europe & US"),
     0x0449 : (None,        "Tamil", "Indic"),
-    0x0444 : ('koi8',      "Tatar", "Cyrillic"),
+    0x0444 : ('cp1251',    "Tatar", "Cyrillic"),
     0x041e : ('iso8859_11',"Thai", "Thai"),
     0x041f : ('iso8859_9', "Turkish", "Turkish"),
-    0x0422 : ('koi8',      "Ukrainian", "Cyrillic"),
+    0x0422 : ('cp1251',    "Ukrainian", "Cyrillic"),
     0x0420 : ('iso8859_6', "Urdu", "Arabic"),
     0x0443 : ('iso8859_9', "Uzbek_Latin", "Turkish"),
-    0x0843 : ('koi8',      "Uzbek_Cyrillic", "Cyrillic"),
+    0x0843 : ('cp1251',    "Uzbek_Cyrillic", "Cyrillic"),
     0x042a : (None,        "Vietnamese", "Vietnamese")
 }
 

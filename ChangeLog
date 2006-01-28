@@ -1,3 +1,8 @@
+2006-01-28  Rubens Ramos  <rubensr@users.sourceforge.net>
+
+	* Fixed incorrect entries in locale table for Russian locale. 
+	(from 'koi8' to 'cp1251')
+
 2005-09-19  Rubens Ramos  <rubensr@users.sourceforge.net>
 
 	* chm/__init__py: Updated version number (forgot to do it last release)

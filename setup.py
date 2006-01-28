@@ -2,7 +2,7 @@ import distutils
 from distutils.core import setup, Extension
 
 setup(name="pychm",
-      version="0.8.2",
+      version="0.8.3",
       description="Python package to handle CHM files",
       author="Rubens Ramos",
       author_email="rubensr@users.sourceforge.net",

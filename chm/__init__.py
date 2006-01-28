@@ -1,4 +1,4 @@
-## Copyright (C) 2003-2004 Rubens Ramos <rubensr@users.sourceforge.net>
+## Copyright (C) 2003-2006 Rubens Ramos <rubensr@users.sourceforge.net>
 
 ## pychm is free software; you can redistribute it and/or
 ## modify it under the terms of the GNU General Public License as
@@ -29,6 +29,6 @@
    access to the CHM files information.
 '''
 __all__ = ["chm", "chmlib", "_chmlib", "extra"]
-__version__ = "0.8.2"
+__version__ = "0.8.3"
 __revision__ = "$Id$"
 
