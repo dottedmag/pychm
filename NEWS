@@ -1,11 +1,12 @@
 0.8.3
   * Fixing identification of Cyrillic language (cp1251).
-
+  * Bug #1464957: Using #WINDOWS and #STRINGS to obtain default page.
+    (this caused gnochm to crash when opening certain files, or to simply
+    show nothing as the startup page)
 ---------------------------------------------------------------------------
 0.8.2
 
   * Identification of index file was slightly improved.
-
 ---------------------------------------------------------------------------
 0.8.1
 

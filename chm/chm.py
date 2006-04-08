@@ -312,29 +312,9 @@ class CHMFile:
                 cursor = buff[index] + (buff[index+1] * 256)
                 index += 2
             index += cursor
-        if ((not self.topics) and (not self.index)):
-            result, ui = chmlib.chm_resolve_object(self.file, '/#STRINGS')
-            if (result != chmlib.CHM_RESOLVE_SUCCESS):
-                print 'GetArchiveInfo: Could not find #STRINGS'
-                return 1
-            
-            size, text = chmlib.chm_retrieve_object(self.file, ui, 1l,
-                                                    ui.length)
-            if (size == 0):
-                print 'GetArchiveInfo: STRINGS file size = 0'
-                return 1
 
-            index = 0
-            while (index < size):
-                next = string.find(text, '\x00', index)
-                chunk = text[index:next]
-                ext = string.lower(chunk[-4:])
-                if (ext == '.hhc'):
-                    self.topics = '/' + chunk
-                elif (ext == '.hhk'):
-                   self.index = '/' + chunk
-                index = next + 1
-
+        self.GetWindowsInfo()
+        
         if not self.lcid:
             self.lcid = extra.get_lcid (self.file)
 
@@ -451,3 +431,70 @@ class CHMFile:
         else:
             return None
 
+    def GetDWORD(self, buff, idx=0):
+        '''Internal method.
+        Reads a double word (4 bytes) from a buffer.
+        '''
+        result = buff[idx] + (buff[idx+1]<<8) + (buff[idx+2]<<16) + \
+                 (buff[idx+3]<<24)
+
+        if result == 0xFFFFFFFF:
+            result = 0
+            
+        return result
+
+    def GetString(self, text, idx):
+        '''Internal method.
+        Retrieves a string from the #STRINGS buffer.
+        '''
+        next = string.find(text, '\x00', idx)
+        chunk = text[idx:next]
+        return chunk
+    
+    def GetWindowsInfo(self):
+        '''Gets information from the #WINDOWS file.
+        Checks the #WINDOWS file to see if it has any info that was
+        not found in #SYSTEM (topics, index or default page.
+        '''
+        result, ui = chmlib.chm_resolve_object(self.file, '/#WINDOWS')
+        if (result != chmlib.CHM_RESOLVE_SUCCESS):
+            return -1
+
+        size, text = chmlib.chm_retrieve_object(self.file, ui, 0l, 8)
+        if (size < 8):
+            return -2
+
+        buff = array.array('B', text)
+        num_entries = self.GetDWORD(buff, 0)
+        entry_size = self.GetDWORD(buff, 4)
+
+        if num_entries < 1:
+            return -3
+        
+        size, text = chmlib.chm_retrieve_object(self.file, ui, 8l, entry_size)
+        if (size < entry_size):
+            return -4
+
+        buff = array.array('B', text)
+        toc_index = self.GetDWORD(buff, 0x60)
+        idx_index = self.GetDWORD(buff, 0x64)
+        dft_index = self.GetDWORD(buff, 0x68)
+        
+        result, ui = chmlib.chm_resolve_object(self.file, '/#STRINGS')
+        if (result != chmlib.CHM_RESOLVE_SUCCESS):
+            return -5
+        
+        size, text = chmlib.chm_retrieve_object(self.file, ui, 0l, ui.length)
+        if (size == 0):
+            return -6
+
+        if ((not self.topics) and (toc_index != 0)):
+            self.topics = self.GetString(text, toc_index)
+            
+        if ((not self.index) and (idx_index != 0)):
+            self.index = self.GetString(text, idx_index)
+
+        if (dft_index != 0):
+            self.home = self.GetString(text, dft_index)
+            if not self.home.startswith("/"):
+                self.home = "/" + self.home

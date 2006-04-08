@@ -1,3 +1,9 @@
+2006-04-08  Rubens Ramos  <rubensr@users.sourceforge.net>
+
+	* chm/chm.py: I think I finally fixed the code that checks #WINDOWS
+	#STRINGS to obtain the index/topics/default page when these things
+	do not exist in the #SYSTEM file. Reported by can3p (#1464957).
+
 2006-01-28  Rubens Ramos  <rubensr@users.sourceforge.net>
 
 	* Fixed incorrect entries in locale table for Russian locale. 
