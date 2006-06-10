@@ -394,7 +394,7 @@ class CHMFile:
         '''Performs full-text search on the archive.
         The first parameter is the word to look for, the second
         indicates if the search should be for whole words only, and
-        the fourth parameter indicates if the search should be
+        the third parameter indicates if the search should be
         restricted to page titles.
         This method will return a tuple, the first item
         indicating if the search results were partial, and the second
