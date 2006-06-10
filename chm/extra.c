@@ -542,7 +542,7 @@ chm_search (struct chmFile *chmfile,
       }
       
       if (!whole_words) {
-        if (!strncmp (word, text, strlen(text))) {
+        if (!strncasecmp (word, text, strlen(text))) {
           partial = true;
           pychm_process_wlc (chmfile, wlc_count, wlc_size, 
                              wlc_offset, doc_index_s, 
