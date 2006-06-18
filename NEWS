@@ -1,3 +1,7 @@
+0.8.4
+  * Word search (does not apply to whole words) is not case sensitive
+    anymore (Glenn Washburn)
+---------------------------------------------------------------------------
 0.8.3
   * Fixing identification of Cyrillic language (cp1251).
   * Bug #1464957: Using #WINDOWS and #STRINGS to obtain default page.

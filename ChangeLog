@@ -1,3 +1,7 @@
+2006-06-18  Rubens Ramos  <rubensr@users.sourceforge.net>
+
+	* chm/chm.py: Search is not case sensitive anymore (Glenn Washburn)
+
 2006-04-08  Rubens Ramos  <rubensr@users.sourceforge.net>
 
 	* chm/chm.py: I think I finally fixed the code that checks #WINDOWS

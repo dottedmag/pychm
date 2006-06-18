@@ -1,6 +1,6 @@
 Project: PyCHM
 Branch: Default
-Version: 0.8.3
+Version: 0.8.4
 Release-Focus: Minor feature enhancements
 Hide: N
 Home-Page-URL: http://gnochm.sourceforge.net
@@ -11,4 +11,4 @@ BSD-Port-URL: http://www.freshports.org/textproc/pychm/
 CVS-URL: http://cvs.sourceforge.net/viewcvs.py/gnochm/
 Changelog-URL: http://sourceforge.net/project/shownotes.php?group_id=96084&release_id=304590
 
-Fixing locale identification for Cyrillic, improving identification of default page (was causing gnochm to crash/show nothing for some files).
+Word search is not case sensitive anymore (Glenn Washburn).
