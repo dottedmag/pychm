@@ -35,6 +35,7 @@ import extra
 import array
 import string
 import os.path
+import sys
 
 charset_table = { 
     0   : 'iso8859_1',  # ANSI_CHARSET
@@ -247,12 +248,12 @@ class CHMFile:
         
         result, ui = chmlib.chm_resolve_object(self.file, '/#SYSTEM')
         if (result != chmlib.CHM_RESOLVE_SUCCESS):
-            print 'GetArchiveInfo: #SYSTEM does not exist'
+            sys.stderr.write('GetArchiveInfo: #SYSTEM does not exist\n')
             return 0
         
         size, text = chmlib.chm_retrieve_object(self.file, ui, 4l, ui.length)
         if (size == 0):
-            print 'GetArchiveInfo: file size = 0'
+            sys.stderr.write('GetArchiveInfo: file size = 0\n')
             return 0
 
         buff = array.array('B', text)
@@ -335,7 +336,7 @@ class CHMFile:
 
         size, text = chmlib.chm_retrieve_object(self.file, ui, 0l, ui.length)
         if (size == 0):
-            print 'GetTopicsTree: file size = 0'
+            sys.stderr.write('GetTopicsTree: file size = 0\n')
             return None
         return text
 
@@ -354,7 +355,7 @@ class CHMFile:
 
         size, text = chmlib.chm_retrieve_object(self.file, ui, 0l, ui.length)
         if (size == 0):
-            print 'GetIndex: file size = 0'
+            sys.stderr.write('GetIndex: file size = 0\n')
             return None
         return text
 
@@ -488,11 +489,15 @@ class CHMFile:
         if (size == 0):
             return -6
 
-        if ((not self.topics) and (toc_index != 0)):
+        if (not self.topics):
             self.topics = self.GetString(text, toc_index)
+            if not self.topics.startswith("/"):
+                self.topics = "/" + self.topics
             
-        if ((not self.index) and (idx_index != 0)):
+        if (not self.index):
             self.index = self.GetString(text, idx_index)
+            if not self.index.startswith("/"):
+                self.index = "/" + self.index
 
         if (dft_index != 0):
             self.home = self.GetString(text, dft_index)
