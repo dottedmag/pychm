@@ -1,3 +1,7 @@
+2006-11-11  Rubens Ramos  <rubensr@users.sourceforge.net>
+
+	* README, freshmeat.txt: Updating docs for release.
+
 2006-06-18  Rubens Ramos  <rubensr@users.sourceforge.net>
 
 	* chm/chm.py: Search is not case sensitive anymore (Glenn Washburn)

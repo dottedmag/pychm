@@ -11,4 +11,4 @@ BSD-Port-URL: http://www.freshports.org/textproc/pychm/
 CVS-URL: http://cvs.sourceforge.net/viewcvs.py/gnochm/
 Changelog-URL: http://sourceforge.net/project/shownotes.php?group_id=96084&release_id=304590
 
-Word search is not case sensitive anymore (Glenn Washburn).
+Word search is not case sensitive anymore (Glenn Washburn). Fixed cases where contents tab was not being displayed.

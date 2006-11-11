@@ -1,6 +1,8 @@
 0.8.4
   * Word search (does not apply to whole words) is not case sensitive
     anymore (Glenn Washburn)
+  * Fixed cases where contents tab was not being displayed (#1563936).
+
 ---------------------------------------------------------------------------
 0.8.3
   * Fixing identification of Cyrillic language (cp1251).
