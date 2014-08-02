@@ -70,13 +70,13 @@
 
 #define FREE(x) free (x); x = NULL
 
-inline uint16_t 
+static uint16_t
 get_uint16 (uint8_t* b) {
   return b[0] |
     b[1]<<8;
 }
 
-inline uint32_t 
+static uint32_t
 get_uint32 (uint8_t* b) {
   return b[0] |
     b[1]<<8   |
@@ -84,7 +84,7 @@ get_uint32 (uint8_t* b) {
     b[3]<<24;
 }
 
-inline uint64_t 
+static uint64_t
 get_uint64 (uint8_t* b) {
   return b[0]           |
     b[1]<<8             |
@@ -96,7 +96,7 @@ get_uint64 (uint8_t* b) {
     (uint64_t) b[7]<<56;
 }
 
-inline uint64_t 
+static uint64_t
 be_encint (unsigned char *buffer, size_t *length)
 {
   uint64_t result = 0;
@@ -117,7 +117,7 @@ be_encint (unsigned char *buffer, size_t *length)
   Finds the first unset bit in memory. Returns the number of set bits found.
   Returns -1 if the buffer runs out before we find an unset bit.
 */
-inline int
+static int
 ffus (unsigned char* byte, int* bit, size_t *length) {
   int bits = 0;
   *length = 0;
@@ -144,7 +144,7 @@ ffus (unsigned char* byte, int* bit, size_t *length) {
 }
 
 
-inline uint64_t
+static uint64_t
 sr_int(unsigned char* byte, int* bit,
        unsigned char s, unsigned char r, size_t *length)
 {
@@ -221,7 +221,7 @@ sr_int(unsigned char* byte, int* bit,
 }
 
             
-inline uint32_t
+static uint32_t
 get_leaf_node_offset(struct chmFile *chmfile,
                      const char *text,
                      uint32_t initial_offset,
@@ -294,7 +294,7 @@ get_leaf_node_offset(struct chmFile *chmfile,
   return initial_offset;
 }
 
-inline int 
+static int
 pychm_process_wlc (struct chmFile *chmfile,
                    uint64_t wlc_count, uint64_t wlc_size,
                    uint32_t wlc_offset, unsigned char ds,
@@ -405,7 +405,7 @@ pychm_process_wlc (struct chmFile *chmfile,
   return true;
 }
 
-int 
+static int
 chm_search (struct chmFile *chmfile,
             const char *text, int whole_words, 
             int titles_only, PyObject *dict)
@@ -572,7 +572,7 @@ typedef struct {
   int offset;
 } Langrec;
 
-Langrec lang_files[] = {
+static Langrec lang_files[] = {
   {"/$FIftiMain",               0x7E},
   {"$WWKeywordLinks/BTree",     0x34},
   {"$WWAssociativeLinks/BTree", 0x34}
@@ -580,7 +580,7 @@ Langrec lang_files[] = {
 
 #define LANG_FILES_SIZE (sizeof(lang_files)/sizeof(Langrec))
 
-int
+static int
 chm_get_lcid (struct chmFile *chmfile) {
   struct chmUnitInfo ui;
   uint32_t lang;
