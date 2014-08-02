@@ -27,7 +27,7 @@
    included in chmlib. It encapsulates functions in the CHMFile class, and
    provides some additional features, such as the ability to obtain
    the contents tree of a CHM archive.
-   
+
 '''
 
 import chmlib
@@ -37,7 +37,7 @@ import string
 import os.path
 import sys
 
-charset_table = { 
+charset_table = {
     0   : 'iso8859_1',  # ANSI_CHARSET
     238 : 'iso8859_2',  # EASTEUROPE_CHARSET
     178 : 'iso8859_6',  # ARABIC_CHARSET
@@ -53,10 +53,10 @@ charset_table = {
     129 : 'cp949',      # HANGUL_CHARSET
     136 : 'cp950',      # CHINESEBIG5_CHARSET
     1   : None,         # DEFAULT_CHARSET
-    2   : None,         # SYMBOL_CHARSET    
-    130 : None,         # JOHAB_CHARSET     
+    2   : None,         # SYMBOL_CHARSET
+    130 : None,         # JOHAB_CHARSET
     163 : None,         # VIETNAMESE_CHARSET
-    77  : None,         # MAC_CHARSET       
+    77  : None,         # MAC_CHARSET
 }
 
 locale_table = {
@@ -199,10 +199,10 @@ class CHMFile:
     encoding = None
     lcid = None
     binaryindex = None
-    
+
     def __init__(self):
         self.searchable = 0
-    
+
     def LoadCHM(self, archiveName):
         '''Loads a CHM archive.
         This function will also call GetArchiveInfo to obtain information
@@ -245,12 +245,12 @@ class CHMFile:
 
         self.searchable = extra.is_searchable (self.file)
         self.lcid = None
-        
+
         result, ui = chmlib.chm_resolve_object(self.file, '/#SYSTEM')
         if (result != chmlib.CHM_RESOLVE_SUCCESS):
             sys.stderr.write('GetArchiveInfo: #SYSTEM does not exist\n')
             return 0
-        
+
         size, text = chmlib.chm_retrieve_object(self.file, ui, 4l, ui.length)
         if (size == 0):
             sys.stderr.write('GetArchiveInfo: file size = 0\n')
@@ -315,7 +315,7 @@ class CHMFile:
             index += cursor
 
         self.GetWindowsInfo()
-        
+
         if not self.lcid:
             self.lcid = extra.get_lcid (self.file)
 
@@ -441,7 +441,7 @@ class CHMFile:
 
         if result == 0xFFFFFFFF:
             result = 0
-            
+
         return result
 
     def GetString(self, text, idx):
@@ -451,7 +451,7 @@ class CHMFile:
         next = string.find(text, '\x00', idx)
         chunk = text[idx:next]
         return chunk
-    
+
     def GetWindowsInfo(self):
         '''Gets information from the #WINDOWS file.
         Checks the #WINDOWS file to see if it has any info that was
@@ -471,7 +471,7 @@ class CHMFile:
 
         if num_entries < 1:
             return -3
-        
+
         size, text = chmlib.chm_retrieve_object(self.file, ui, 8l, entry_size)
         if (size < entry_size):
             return -4
@@ -480,11 +480,11 @@ class CHMFile:
         toc_index = self.GetDWORD(buff, 0x60)
         idx_index = self.GetDWORD(buff, 0x64)
         dft_index = self.GetDWORD(buff, 0x68)
-        
+
         result, ui = chmlib.chm_resolve_object(self.file, '/#STRINGS')
         if (result != chmlib.CHM_RESOLVE_SUCCESS):
             return -5
-        
+
         size, text = chmlib.chm_retrieve_object(self.file, ui, 0l, ui.length)
         if (size == 0):
             return -6
@@ -493,7 +493,7 @@ class CHMFile:
             self.topics = self.GetString(text, toc_index)
             if not self.topics.startswith("/"):
                 self.topics = "/" + self.topics
-            
+
         if (not self.index):
             self.index = self.GetString(text, idx_index)
             if not self.index.startswith("/"):
