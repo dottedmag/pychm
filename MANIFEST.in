@@ -1,4 +1,2 @@
-include ChangeLog
 include COPYING
-include NEWS
 include chm/swig_chm.i
