@@ -1,3 +1,8 @@
+0.8.4.1
+  * New maintainer (Mikhail Gusarov)
+  * Fix compilation under OS X and Windows.
+
+---------------------------------------------------------------------------
 0.8.4
   * Word search (does not apply to whole words) is not case sensitive
     anymore (Glenn Washburn)
