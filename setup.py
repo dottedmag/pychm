@@ -8,7 +8,7 @@ Compressed Html Help files (.chm).
 '''
 
 setup(name="pychm",
-      version="0.8.4.1",
+      version="0.8.4.1+git",
       description="Python package to handle CHM files",
       author="Rubens Ramos",
       author_email="rubensr@users.sourceforge.net",
