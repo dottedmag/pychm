@@ -1,5 +1,4 @@
-import distutils
-from distutils.core import setup, Extension
+from setuptools import setup, Extension
 
 long_description = '''
 The chm package provides three modules, chm, chmlib and extra, which provide
