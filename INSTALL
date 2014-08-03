@@ -11,10 +11,10 @@ Requirements
 Installation from sources
 -------------------------
 
-python setup.py install
+$ python setup.py install
 
-Tip - if the compilation is failing because your chmlib is installed somewhere
-not visible to gcc, then you can use the CPATH and LIBRARY_PATH environment
+If the compilation is failing because your chmlib is installed somewhere not
+visible to gcc, then you can use the CPATH and LIBRARY_PATH environment
 variables before trying to compile:
 
 CPATH=<directory where chmlib include files are> \
