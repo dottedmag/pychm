@@ -1,0 +1,23 @@
+Author
+------
+
+Rubens Ramos <rubensr@users.sourceforge.net>
+
+Maintainer
+----------
+
+Mikhail Gusarov <dottedmag@dottedmag.net>
+
+Acknowledgements
+----------------
+
+This work would not have been possible without the existence of chmlib,
+developed by Jed Wing, and a lot of the python code used to parse the contents
+tree and to decode the index files was heavily based on the code implemented by
+Razvan Cojocaru <razvanco@gmx.net> for the xCHM viewer.
+
+Bug reports
+-----------
+
+can3p, Chang (changshu), Hristo Iliev, Carlos Liu, Torsten Marek, Dmitri
+(nebraskin), Fredrik de Vibe, Glenn Washburn
