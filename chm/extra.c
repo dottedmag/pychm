@@ -85,18 +85,6 @@ get_uint32 (uint8_t* b) {
 }
 
 static uint64_t
-get_uint64 (uint8_t* b) {
-  return b[0]           |
-    b[1]<<8             |
-    b[2]<<16            |
-    b[3]<<24            |
-    (uint64_t) b[4]<<32 |
-    (uint64_t) b[5]<<40 |
-    (uint64_t) b[6]<<48 |
-    (uint64_t) b[7]<<56;
-}
-
-static uint64_t
 be_encint (unsigned char *buffer, size_t *length)
 {
   uint64_t result = 0;
