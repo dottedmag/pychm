@@ -342,7 +342,7 @@ pychm_process_wlc (struct chmFile *chmfile,
     } else {
       combuf[COMMON_BUF_LEN - 1] = 0;
 
-      topic = strdup (combuf);
+      topic = strdup ((char *)combuf);
     }
 
     urloff = get_uint32 (entry + 8);
@@ -366,7 +366,7 @@ pychm_process_wlc (struct chmFile *chmfile,
     combuf[COMMON_BUF_LEN - 1] = 0;
 
     FREE (url);
-    url = strdup (combuf);
+    url = strdup ((char *)combuf);
 
     if (url && topic) {
 #ifdef __PYTHON__
