@@ -13,10 +13,7 @@ Installation from sources
 
 $ python setup.py install
 
-If the compilation is failing because your chmlib is installed somewhere not
-visible to gcc, then you can use the CPATH and LIBRARY_PATH environment
-variables before trying to compile:
+If the chmlib is not in standard compiler search paths,
+you can use CFLAGS/LDFLAGS environment variables, e.g.
 
-CPATH=<directory where chmlib include files are> \
-LIBRARY_PATH=<directory where the chmlib library is> \
-python setup.py install
+$ CFLAGS=-I/opt/local/include LDFLAGS=-L/opt/local/lib python setup.py install
