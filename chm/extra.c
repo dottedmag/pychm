@@ -34,9 +34,18 @@
 #define PyObject void
 #endif
 
-#include <inttypes.h>
+typedef struct {
+  PyObject_HEAD
+  void *ptr;
+  void *ty;
+  int own;
+  PyObject *next;
+#ifdef SWIGPYTHON_BUILTIN
+  PyObject *dict;
+#endif
+} SwigPyObject;
+
 #include <stdlib.h>
-#include <strings.h>
 
 #if defined(_WIN32) || defined(__WIN32__)
 #       if defined(_MSC_VER)
@@ -47,6 +56,13 @@
 #                       define MODEXPORT(a) __declspec(dllexport) a
 #                       define MODIMPORT(a) extern a
 #               endif
+#define uint64_t unsigned long long
+#define uint32_t unsigned int
+#define uint16_t unsigned short
+#define uint8_t  unsigned char
+#define size_t   int
+#define strcasecmp _stricmp
+#define strncasecmp _strnicmp
 #       else
 #               if defined(__BORLANDC__)
 #                       define MODEXPORT(a) a _export
@@ -59,6 +75,8 @@
 #else
 #       define MODEXPORT(a) a
 #       define MODIMPORT(a) a
+#include <inttypes.h>
+#include <strings.h>
 #endif
 
 #define false 0
@@ -370,8 +388,15 @@ pychm_process_wlc (struct chmFile *chmfile,
 
     if (url && topic) {
 #ifdef __PYTHON__
-      PyDict_SetItemString (dict, topic,
-                            PyString_FromString (url));
+      PyDict_SetItem(dict, 
+#if PY_MAJOR_VERSION >= 3
+                     PyBytes_FromStringAndSize(topic, strlen(topic)),
+                     PyBytes_FromStringAndSize(url, strlen(url))
+#else
+                     PyString_FromString (topic),
+                     PyString_FromString (url)
+#endif
+      );
 #else
       printf ("%s ==> %s\n", url, topic);
 #endif
@@ -598,7 +623,7 @@ is_searchable (PyObject *self, PyObject *args) {
 
   if (PyArg_ParseTuple (args, "O:is_searchable", &obj0)) {
 
-    file = (struct chmFile *) PyCObject_AsVoidPtr(obj0);
+      file = (struct chmFile *) ((SwigPyObject*)(obj0))->ptr;
 
     if (chm_resolve_object (file, "/$FIftiMain", &ui) !=
         CHM_RESOLVE_SUCCESS ||
@@ -622,24 +647,31 @@ is_searchable (PyObject *self, PyObject *args) {
 static PyObject *
 search (PyObject *self, PyObject *args) {
   char *text;
-  int whole_words;
-  int titles_only;
+  int whole_words = 0;
+  int titles_only = 0;
   int partial;
   struct chmFile *file;
   PyObject *obj0;
   PyObject *dict;
 
+#if PY_MAJOR_VERSION >= 3
+  PyObject *obj1;
+  if (PyArg_ParseTuple (args, "OSii:search", &obj0, &obj1,
+#else
   if (PyArg_ParseTuple (args, "Osii:search", &obj0, &text,
+#endif
                         &whole_words, &titles_only)) {
-
+      
+#if PY_MAJOR_VERSION >= 3
+      text = PyBytes_AsString(obj1);
+#endif
     dict = PyDict_New();
 
     if (dict) {
-      file = (struct chmFile *) PyCObject_AsVoidPtr(obj0);
+      file = (struct chmFile *) ((SwigPyObject*)(obj0))->ptr;
 
       partial = chm_search (file,
                             text, whole_words, titles_only, dict);
-
       return Py_BuildValue ("(iO)", partial, dict);
 
     } else {
@@ -661,7 +693,7 @@ get_lcid (PyObject *self, PyObject *args) {
 
   if (PyArg_ParseTuple (args, "O:get_lcid", &obj0)) {
 
-      file = (struct chmFile *) PyCObject_AsVoidPtr(obj0);
+      file = (struct chmFile *) ((SwigPyObject*)(obj0))->ptr;
 
       code = chm_get_lcid (file);
 
@@ -687,9 +719,47 @@ IndexMethods[] = {
   {NULL, NULL, 0, NULL}
 };
 
-MODEXPORT(void)
-initextra (void) {
-  Py_InitModule ("extra", IndexMethods);
+
+#if PY_MAJOR_VERSION >= 3
+static struct PyModuleDef moduledef = {
+        PyModuleDef_HEAD_INIT,
+        "extra",
+        NULL,
+        -1,
+        IndexMethods,
+        NULL,
+        NULL,
+        NULL,
+        NULL
+};
+
+#define INITERROR return NULL
+
+#else /* python < 3 */
+
+#define INITERROR return
+
+#endif /* python 3/2 */
+
+
+#if PY_MAJOR_VERSION >= 3
+PyObject* PyInit_extra(void)
+#else
+void initextra (void)
+#endif
+{
+    PyObject *module;
+#if PY_MAJOR_VERSION >= 3
+    module = PyModule_Create(&moduledef);
+#else
+    module = Py_InitModule ("extra", IndexMethods);
+#endif
+    if (module == NULL)
+        INITERROR;
+
+#if PY_MAJOR_VERSION >= 3
+    return module;
+#endif
 }
 
 #else
