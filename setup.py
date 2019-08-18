@@ -1,11 +1,7 @@
 from setuptools import setup, Extension
 
-long_description = '''
-The chm package provides three modules, chm, chmlib and extra, which provide
-access to the API implemented by the C library chmlib and some additional
-classes and functions. They are used to access MS-ITSS encoded files -
-Compressed Html Help files (.chm).
-'''
+with open("README", "r") as fh:
+    long_description = fh.read()
 
 setup(name="pychm",
       version="0.8.4.1+git",
