@@ -210,6 +210,9 @@ class CHMFile:
         if self.filename is not None:
             self.CloseCHM()
 
+        if isinstance(archiveName, str):
+            archiveName = archiveName.encode(sys.getfilesystemencoding())
+            
         self.file = chmlib.chm_open(archiveName)
         if self.file is None:
             return 0
