@@ -32,7 +32,7 @@ import chmlib
 import extra
 import array
 import string
-import os.path
+import posixpath
 import sys
 
 charset_table = {
@@ -364,7 +364,7 @@ class CHMFile:
         The UnitInfo is used to retrieve the document contents
         '''
         if self.file:
-            path = os.path.abspath(document)
+            path = posixpath.normpath(document)
             return chmlib.chm_resolve_object(self.file, path)
         else:
             return (1, None)
