@@ -719,7 +719,6 @@ int dummy_enumerator (struct chmFile *h,
     if (arglist) {
       result = PyEval_CallObject(my_callback, arglist);
       Py_DECREF(arglist);
-      Py_DECREF(result);
 
       Py_DECREF(py_h);
       Py_DECREF(py_ui);
@@ -727,6 +726,7 @@ int dummy_enumerator (struct chmFile *h,
       if (result == NULL) {
         return 0; /* Pass error back */
       } else {
+        Py_DECREF(result);
         return 1;
       }
     } else

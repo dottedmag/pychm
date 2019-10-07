@@ -1,6 +1,10 @@
 import chm.chm as sut, chm.chmlib as sut_chmlib
 
-def test_error_in_callback():
+def test_crash_in_callback():
+    """
+    Test checks that an exception in a callback does not cause a crash in
+    chmlib module.
+    """
     f = sut.CHMFile()
     f.LoadCHM("tests/integration/example.chm")
 
