@@ -377,14 +377,24 @@ class CHMFile:
         '''
         if self.file and ui:
             if length == -1:
-                len = ui.length
+                size = ui.length
             else:
-                len = length
+                size = length
             if start == -1:
-                st = 0l
+                offset = 0l
             else:
-                st = long(start)
-            return chmlib.chm_retrieve_object(self.file, ui, st, len)
+                offset = long(start)
+
+            content = ''
+            while size > 0:
+                (sz, chunk) = chmlib.chm_retrieve_object(self.file, ui, offset, size)
+                if sz == 0:
+                    return (0, '')
+                content += chunk[:sz]
+                size -= sz
+                offset += sz
+
+            return (len(content), content)
         else:
             return (0, '')
 
