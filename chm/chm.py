@@ -329,7 +329,7 @@ class CHMFile:
             if (res != chmlib.CHM_RESOLVE_SUCCESS):
                 return None
 
-        size, text = chmlib.chm_retrieve_object(self.file, ui, 0l, ui.length)
+        size, text = chmlib.chm_retrieve_object(self.file, ui, 0, ui.length)
         if (size == 0):
             return None
         return text
@@ -347,7 +347,7 @@ class CHMFile:
             if (res != chmlib.CHM_RESOLVE_SUCCESS):
                 return None
 
-        size, text = chmlib.chm_retrieve_object(self.file, ui, 0l, ui.length)
+        size, text = chmlib.chm_retrieve_object(self.file, ui, 0, ui.length)
         if (size == 0):
             return None
         return text
@@ -377,7 +377,7 @@ class CHMFile:
             else:
                 size = length
             if start == -1:
-                offset = 0l
+                offset = 0
             else:
                 offset = long(start)
 
@@ -464,7 +464,7 @@ class CHMFile:
         if (result != chmlib.CHM_RESOLVE_SUCCESS):
             return -1
 
-        size, text = chmlib.chm_retrieve_object(self.file, ui, 0l, 8)
+        size, text = chmlib.chm_retrieve_object(self.file, ui, 0, 8)
         if (size < 8):
             return -2
 
@@ -475,7 +475,7 @@ class CHMFile:
         if num_entries < 1:
             return -3
 
-        size, text = chmlib.chm_retrieve_object(self.file, ui, 8l, entry_size)
+        size, text = chmlib.chm_retrieve_object(self.file, ui, 8, entry_size)
         if (size < entry_size):
             return -4
 
@@ -488,7 +488,7 @@ class CHMFile:
         if (result != chmlib.CHM_RESOLVE_SUCCESS):
             return -5
 
-        size, text = chmlib.chm_retrieve_object(self.file, ui, 0l, ui.length)
+        size, text = chmlib.chm_retrieve_object(self.file, ui, 0, ui.length)
         if (size == 0):
             return -6
 
