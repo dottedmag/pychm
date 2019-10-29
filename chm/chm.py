@@ -249,7 +249,7 @@ class CHMFile:
         if (result != chmlib.CHM_RESOLVE_SUCCESS):
             return 0
 
-        size, text = chmlib.chm_retrieve_object(self.file, ui, 4l, ui.length)
+        size, text = chmlib.chm_retrieve_object(self.file, ui, 4, ui.length)
         if (size == 0):
             return 0
 
