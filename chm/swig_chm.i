@@ -396,8 +396,14 @@ pychm_process_wlc (struct chmFile *chmfile,
     url = strdup ((char *)combuf);
 
     if (url && topic) {
-      PyDict_SetItemString (dict, topic,
-                            PyString_FromString (url));
+#if PY_VERSION_HEX >= 0x03000000
+      PyObject *pytopic = PyBytes_FromString(topic);
+      PyObject *pyurl = PyBytes_FromString(url);
+#else
+      PyObject *pytopic = PyString_FromString(topic);
+      PyObject *pyurl = PyString_FromString(url);
+#endif
+      PyDict_SetItem(dict, pytopic, pyurl);
     }
 
     count = sr_int (buffer + off, &wlc_bit, cs, cr, &length);
