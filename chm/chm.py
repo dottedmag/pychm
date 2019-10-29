@@ -28,8 +28,8 @@
 
 '''
 
-import chmlib
-import extra
+from . import chmlib
+from . import extra
 import array
 import string
 import posixpath

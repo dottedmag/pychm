@@ -19,7 +19,7 @@
 extra
 '''
 
-import chmlib
+from . import chmlib
 
 def get_lcid(f):
     ret = chmlib.get_lcid(f)
