@@ -36,20 +36,20 @@ import posixpath
 import sys
 
 charset_table = {
-    0: 'iso8859_1',  # ANSI_CHARSET
-    238: 'iso8859_2',  # EASTEUROPE_CHARSET
-    178: 'iso8859_6',  # ARABIC_CHARSET
-    161: 'iso8859_7',  # GREEK_CHARSET
-    177: 'iso8859_8',  # HEBREW_CHARSET
-    162: 'iso8859_9',  # TURKISH_CHARSET
-    222: 'iso8859_11',  # THAI_CHARSET - hmm not in python 2.2...
-    186: 'iso8859_13',  # BALTIC_CHARSET
-    204: 'cp1251',  # RUSSIAN_CHARSET
-    255: 'cp437',  # OEM_CHARSET
-    128: 'cp932',  # SHIFTJIS_CHARSET
-    134: 'cp936',  # GB2312_CHARSET
-    129: 'cp949',  # HANGUL_CHARSET
-    136: 'cp950',  # CHINESEBIG5_CHARSET
+    0: b'iso8859_1',  # ANSI_CHARSET
+    238: b'iso8859_2',  # EASTEUROPE_CHARSET
+    178: b'iso8859_6',  # ARABIC_CHARSET
+    161: b'iso8859_7',  # GREEK_CHARSET
+    177: b'iso8859_8',  # HEBREW_CHARSET
+    162: b'iso8859_9',  # TURKISH_CHARSET
+    222: b'iso8859_11',  # THAI_CHARSET
+    186: b'iso8859_13',  # BALTIC_CHARSET
+    204: b'cp1251',  # RUSSIAN_CHARSET
+    255: b'cp437',  # OEM_CHARSET
+    128: b'cp932',  # SHIFTJIS_CHARSET
+    134: b'cp936',  # GB2312_CHARSET
+    129: b'cp949',  # HANGUL_CHARSET
+    136: b'cp950',  # CHINESEBIG5_CHARSET
     1: None,  # DEFAULT_CHARSET
     2: None,  # SYMBOL_CHARSET
     130: None,  # JOHAB_CHARSET
@@ -58,141 +58,141 @@ charset_table = {
 }
 
 locale_table = {
-    0x0436: ('iso8859_1', "Afrikaans", "Western Europe & US"),
-    0x041c: ('iso8859_2', "Albanian", "Central Europe"),
-    0x0401: ('iso8859_6', "Arabic_Saudi_Arabia", "Arabic"),
-    0x0801: ('iso8859_6', "Arabic_Iraq", "Arabic"),
-    0x0c01: ('iso8859_6', "Arabic_Egypt", "Arabic"),
-    0x1001: ('iso8859_6', "Arabic_Libya", "Arabic"),
-    0x1401: ('iso8859_6', "Arabic_Algeria", "Arabic"),
-    0x1801: ('iso8859_6', "Arabic_Morocco", "Arabic"),
-    0x1c01: ('iso8859_6', "Arabic_Tunisia", "Arabic"),
-    0x2001: ('iso8859_6', "Arabic_Oman", "Arabic"),
-    0x2401: ('iso8859_6', "Arabic_Yemen", "Arabic"),
-    0x2801: ('iso8859_6', "Arabic_Syria", "Arabic"),
-    0x2c01: ('iso8859_6', "Arabic_Jordan", "Arabic"),
-    0x3001: ('iso8859_6', "Arabic_Lebanon", "Arabic"),
-    0x3401: ('iso8859_6', "Arabic_Kuwait", "Arabic"),
-    0x3801: ('iso8859_6', "Arabic_UAE", "Arabic"),
-    0x3c01: ('iso8859_6', "Arabic_Bahrain", "Arabic"),
-    0x4001: ('iso8859_6', "Arabic_Qatar", "Arabic"),
-    0x042b: (None, "Armenian", "Armenian"),
-    0x042c: ('iso8859_9', "Azeri_Latin", "Turkish"),
-    0x082c: ('cp1251', "Azeri_Cyrillic", "Cyrillic"),
-    0x042d: ('iso8859_1', "Basque", "Western Europe & US"),
-    0x0423: ('cp1251', "Belarusian", "Cyrillic"),
-    0x0402: ('cp1251', "Bulgarian", "Cyrillic"),
-    0x0403: ('iso8859_1', "Catalan", "Western Europe & US"),
-    0x0404: ('cp950', "Chinese_Taiwan", "Traditional Chinese"),
-    0x0804: ('cp936', "Chinese_PRC", "Simplified Chinese"),
-    0x0c04: ('cp950', "Chinese_Hong_Kong", "Traditional Chinese"),
-    0x1004: ('cp936', "Chinese_Singapore", "Simplified Chinese"),
-    0x1404: ('cp950', "Chinese_Macau", "Traditional Chinese"),
-    0x041a: ('iso8859_2', "Croatian", "Central Europe"),
-    0x0405: ('iso8859_2', "Czech", "Central Europe"),
-    0x0406: ('iso8859_1', "Danish", "Western Europe & US"),
-    0x0413: ('iso8859_1', "Dutch_Standard", "Western Europe & US"),
-    0x0813: ('iso8859_1', "Dutch_Belgian", "Western Europe & US"),
-    0x0409: ('iso8859_1', "English_United_States", "Western Europe & US"),
-    0x0809: ('iso8859_1', "English_United_Kingdom", "Western Europe & US"),
-    0x0c09: ('iso8859_1', "English_Australian", "Western Europe & US"),
-    0x1009: ('iso8859_1', "English_Canadian", "Western Europe & US"),
-    0x1409: ('iso8859_1', "English_New_Zealand", "Western Europe & US"),
-    0x1809: ('iso8859_1', "English_Irish", "Western Europe & US"),
-    0x1c09: ('iso8859_1', "English_South_Africa", "Western Europe & US"),
-    0x2009: ('iso8859_1', "English_Jamaica", "Western Europe & US"),
-    0x2409: ('iso8859_1', "English_Caribbean", "Western Europe & US"),
-    0x2809: ('iso8859_1', "English_Belize", "Western Europe & US"),
-    0x2c09: ('iso8859_1', "English_Trinidad", "Western Europe & US"),
-    0x3009: ('iso8859_1', "English_Zimbabwe", "Western Europe & US"),
-    0x3409: ('iso8859_1', "English_Philippines", "Western Europe & US"),
-    0x0425: ('iso8859_13', "Estonian", "Baltic",),
-    0x0438: ('iso8859_1', "Faeroese", "Western Europe & US"),
-    0x0429: ('iso8859_6', "Farsi", "Arabic"),
-    0x040b: ('iso8859_1', "Finnish", "Western Europe & US"),
-    0x040c: ('iso8859_1', "French_Standard", "Western Europe & US"),
-    0x080c: ('iso8859_1', "French_Belgian", "Western Europe & US"),
-    0x0c0c: ('iso8859_1', "French_Canadian", "Western Europe & US"),
-    0x100c: ('iso8859_1', "French_Swiss", "Western Europe & US"),
-    0x140c: ('iso8859_1', "French_Luxembourg", "Western Europe & US"),
-    0x180c: ('iso8859_1', "French_Monaco", "Western Europe & US"),
-    0x0437: (None, "Georgian", "Georgian"),
-    0x0407: ('iso8859_1', "German_Standard", "Western Europe & US"),
-    0x0807: ('iso8859_1', "German_Swiss", "Western Europe & US"),
-    0x0c07: ('iso8859_1', "German_Austrian", "Western Europe & US"),
-    0x1007: ('iso8859_1', "German_Luxembourg", "Western Europe & US"),
-    0x1407: ('iso8859_1', "German_Liechtenstein", "Western Europe & US"),
-    0x0408: ('iso8859_7', "Greek", "Greek"),
-    0x040d: ('iso8859_8', "Hebrew", "Hebrew"),
-    0x0439: (None, "Hindi", "Indic"),
-    0x040e: ('iso8859_2', "Hungarian", "Central Europe"),
-    0x040f: ('iso8859_1', "Icelandic", "Western Europe & US"),
-    0x0421: ('iso8859_1', "Indonesian", "Western Europe & US"),
-    0x0410: ('iso8859_1', "Italian_Standard", "Western Europe & US"),
-    0x0810: ('iso8859_1', "Italian_Swiss", "Western Europe & US"),
-    0x0411: ('cp932', "Japanese", "Japanese"),
-    0x043f: ('cp1251', "Kazakh", "Cyrillic"),
-    0x0457: (None, "Konkani", "Indic"),
-    0x0412: ('cp949', "Korean", "Korean"),
-    0x0426: ('iso8859_13', "Latvian", "Baltic",),
-    0x0427: ('iso8859_13', "Lithuanian", "Baltic",),
-    0x042f: ('cp1251', "Macedonian", "Cyrillic"),
-    0x043e: ('iso8859_1', "Malay_Malaysia", "Western Europe & US"),
-    0x083e: ('iso8859_1', "Malay_Brunei_Darussalam", "Western Europe & US"),
-    0x044e: (None, "Marathi", "Indic"),
-    0x0414: ('iso8859_1', "Norwegian_Bokmal", "Western Europe & US"),
-    0x0814: ('iso8859_1', "Norwegian_Nynorsk", "Western Europe & US"),
-    0x0415: ('iso8859_2', "Polish", "Central Europe"),
-    0x0416: ('iso8859_1', "Portuguese_Brazilian", "Western Europe & US"),
-    0x0816: ('iso8859_1', "Portuguese_Standard", "Western Europe & US"),
-    0x0418: ('iso8859_2', "Romanian", "Central Europe"),
-    0x0419: ('cp1251', "Russian", "Cyrillic"),
-    0x044f: (None, "Sanskrit", "Indic"),
-    0x081a: ('iso8859_2', "Serbian_Latin", "Central Europe"),
-    0x0c1a: ('cp1251', "Serbian_Cyrillic", "Cyrillic"),
-    0x041b: ('iso8859_2', "Slovak", "Central Europe"),
-    0x0424: ('iso8859_2', "Slovenian", "Central Europe"),
-    0x040a: ('iso8859_1', "Spanish_Trad_Sort", "Western Europe & US"),
-    0x080a: ('iso8859_1', "Spanish_Mexican", "Western Europe & US"),
-    0x0c0a: ('iso8859_1', "Spanish_Modern_Sort", "Western Europe & US"),
-    0x100a: ('iso8859_1', "Spanish_Guatemala", "Western Europe & US"),
-    0x140a: ('iso8859_1', "Spanish_Costa_Rica", "Western Europe & US"),
-    0x180a: ('iso8859_1', "Spanish_Panama", "Western Europe & US"),
-    0x1c0a: ('iso8859_1', "Spanish_Dominican_Repub", "Western Europe & US"),
-    0x200a: ('iso8859_1', "Spanish_Venezuela", "Western Europe & US"),
-    0x240a: ('iso8859_1', "Spanish_Colombia", "Western Europe & US"),
-    0x280a: ('iso8859_1', "Spanish_Peru", "Western Europe & US"),
-    0x2c0a: ('iso8859_1', "Spanish_Argentina", "Western Europe & US"),
-    0x300a: ('iso8859_1', "Spanish_Ecuador", "Western Europe & US"),
-    0x340a: ('iso8859_1', "Spanish_Chile", "Western Europe & US"),
-    0x380a: ('iso8859_1', "Spanish_Uruguay", "Western Europe & US"),
-    0x3c0a: ('iso8859_1', "Spanish_Paraguay", "Western Europe & US"),
-    0x400a: ('iso8859_1', "Spanish_Bolivia", "Western Europe & US"),
-    0x440a: ('iso8859_1', "Spanish_El_Salvador", "Western Europe & US"),
-    0x480a: ('iso8859_1', "Spanish_Honduras", "Western Europe & US"),
-    0x4c0a: ('iso8859_1', "Spanish_Nicaragua", "Western Europe & US"),
-    0x500a: ('iso8859_1', "Spanish_Puerto_Rico", "Western Europe & US"),
-    0x0441: ('iso8859_1', "Swahili", "Western Europe & US"),
-    0x041d: ('iso8859_1', "Swedish", "Western Europe & US"),
-    0x081d: ('iso8859_1', "Swedish_Finland", "Western Europe & US"),
-    0x0449: (None, "Tamil", "Indic"),
-    0x0444: ('cp1251', "Tatar", "Cyrillic"),
-    0x041e: ('iso8859_11', "Thai", "Thai"),
-    0x041f: ('iso8859_9', "Turkish", "Turkish"),
-    0x0422: ('cp1251', "Ukrainian", "Cyrillic"),
-    0x0420: ('iso8859_6', "Urdu", "Arabic"),
-    0x0443: ('iso8859_9', "Uzbek_Latin", "Turkish"),
-    0x0843: ('cp1251', "Uzbek_Cyrillic", "Cyrillic"),
-    0x042a: (None, "Vietnamese", "Vietnamese")
+    0x0436: (b'iso8859_1', b'Afrikaans', b'Western Europe & US'),
+    0x041c: (b'iso8859_2', b'Albanian', b'Central Europe'),
+    0x0401: (b'iso8859_6', b'Arabic_Saudi_Arabia', b'Arabic'),
+    0x0801: (b'iso8859_6', b'Arabic_Iraq', b'Arabic'),
+    0x0c01: (b'iso8859_6', b'Arabic_Egypt', b'Arabic'),
+    0x1001: (b'iso8859_6', b'Arabic_Libya', b'Arabic'),
+    0x1401: (b'iso8859_6', b'Arabic_Algeria', b'Arabic'),
+    0x1801: (b'iso8859_6', b'Arabic_Morocco', b'Arabic'),
+    0x1c01: (b'iso8859_6', b'Arabic_Tunisia', b'Arabic'),
+    0x2001: (b'iso8859_6', b'Arabic_Oman', b'Arabic'),
+    0x2401: (b'iso8859_6', b'Arabic_Yemen', b'Arabic'),
+    0x2801: (b'iso8859_6', b'Arabic_Syria', b'Arabic'),
+    0x2c01: (b'iso8859_6', b'Arabic_Jordan', b'Arabic'),
+    0x3001: (b'iso8859_6', b'Arabic_Lebanon', b'Arabic'),
+    0x3401: (b'iso8859_6', b'Arabic_Kuwait', b'Arabic'),
+    0x3801: (b'iso8859_6', b'Arabic_UAE', b'Arabic'),
+    0x3c01: (b'iso8859_6', b'Arabic_Bahrain', b'Arabic'),
+    0x4001: (b'iso8859_6', b'Arabic_Qatar', b'Arabic'),
+    0x042b: (None, b'Armenian', b'Armenian'),
+    0x042c: (b'iso8859_9', b'Azeri_Latin', b'Turkish'),
+    0x082c: (b'cp1251', b'Azeri_Cyrillic', b'Cyrillic'),
+    0x042d: (b'iso8859_1', b'Basque', b'Western Europe & US'),
+    0x0423: (b'cp1251', b'Belarusian', b'Cyrillic'),
+    0x0402: (b'cp1251', b'Bulgarian', b'Cyrillic'),
+    0x0403: (b'iso8859_1', b'Catalan', b'Western Europe & US'),
+    0x0404: (b'cp950', b'Chinese_Taiwan', b'Traditional Chinese'),
+    0x0804: (b'cp936', b'Chinese_PRC', b'Simplified Chinese'),
+    0x0c04: (b'cp950', b'Chinese_Hong_Kong', b'Traditional Chinese'),
+    0x1004: (b'cp936', b'Chinese_Singapore', b'Simplified Chinese'),
+    0x1404: (b'cp950', b'Chinese_Macau', b'Traditional Chinese'),
+    0x041a: (b'iso8859_2', b'Croatian', b'Central Europe'),
+    0x0405: (b'iso8859_2', b'Czech', b'Central Europe'),
+    0x0406: (b'iso8859_1', b'Danish', b'Western Europe & US'),
+    0x0413: (b'iso8859_1', b'Dutch_Standard', b'Western Europe & US'),
+    0x0813: (b'iso8859_1', b'Dutch_Belgian', b'Western Europe & US'),
+    0x0409: (b'iso8859_1', b'English_United_States', b'Western Europe & US'),
+    0x0809: (b'iso8859_1', b'English_United_Kingdom', b'Western Europe & US'),
+    0x0c09: (b'iso8859_1', b'English_Australian', b'Western Europe & US'),
+    0x1009: (b'iso8859_1', b'English_Canadian', b'Western Europe & US'),
+    0x1409: (b'iso8859_1', b'English_New_Zealand', b'Western Europe & US'),
+    0x1809: (b'iso8859_1', b'English_Irish', b'Western Europe & US'),
+    0x1c09: (b'iso8859_1', b'English_South_Africa', b'Western Europe & US'),
+    0x2009: (b'iso8859_1', b'English_Jamaica', b'Western Europe & US'),
+    0x2409: (b'iso8859_1', b'English_Caribbean', b'Western Europe & US'),
+    0x2809: (b'iso8859_1', b'English_Belize', b'Western Europe & US'),
+    0x2c09: (b'iso8859_1', b'English_Trinidad', b'Western Europe & US'),
+    0x3009: (b'iso8859_1', b'English_Zimbabwe', b'Western Europe & US'),
+    0x3409: (b'iso8859_1', b'English_Philippines', b'Western Europe & US'),
+    0x0425: (b'iso8859_13', b'Estonian', b'Baltic'),
+    0x0438: (b'iso8859_1', b'Faeroese', b'Western Europe & US'),
+    0x0429: (b'iso8859_6', b'Farsi', b'Arabic'),
+    0x040b: (b'iso8859_1', b'Finnish', b'Western Europe & US'),
+    0x040c: (b'iso8859_1', b'French_Standard', b'Western Europe & US'),
+    0x080c: (b'iso8859_1', b'French_Belgian', b'Western Europe & US'),
+    0x0c0c: (b'iso8859_1', b'French_Canadian', b'Western Europe & US'),
+    0x100c: (b'iso8859_1', b'French_Swiss', b'Western Europe & US'),
+    0x140c: (b'iso8859_1', b'French_Luxembourg', b'Western Europe & US'),
+    0x180c: (b'iso8859_1', b'French_Monaco', b'Western Europe & US'),
+    0x0437: (None, b'Georgian', b'Georgian'),
+    0x0407: (b'iso8859_1', b'German_Standard', b'Western Europe & US'),
+    0x0807: (b'iso8859_1', b'German_Swiss', b'Western Europe & US'),
+    0x0c07: (b'iso8859_1', b'German_Austrian', b'Western Europe & US'),
+    0x1007: (b'iso8859_1', b'German_Luxembourg', b'Western Europe & US'),
+    0x1407: (b'iso8859_1', b'German_Liechtenstein', b'Western Europe & US'),
+    0x0408: (b'iso8859_7', b'Greek', b'Greek'),
+    0x040d: (b'iso8859_8', b'Hebrew', b'Hebrew'),
+    0x0439: (None, b'Hindi', b'Indic'),
+    0x040e: (b'iso8859_2', b'Hungarian', b'Central Europe'),
+    0x040f: (b'iso8859_1', b'Icelandic', b'Western Europe & US'),
+    0x0421: (b'iso8859_1', b'Indonesian', b'Western Europe & US'),
+    0x0410: (b'iso8859_1', b'Italian_Standard', b'Western Europe & US'),
+    0x0810: (b'iso8859_1', b'Italian_Swiss', b'Western Europe & US'),
+    0x0411: (b'cp932', b'Japanese', b'Japanese'),
+    0x043f: (b'cp1251', b'Kazakh', b'Cyrillic'),
+    0x0457: (None, b'Konkani', b'Indic'),
+    0x0412: (b'cp949', b'Korean', b'Korean'),
+    0x0426: (b'iso8859_13', b'Latvian', b'Baltic'),
+    0x0427: (b'iso8859_13', b'Lithuanian', b'Baltic'),
+    0x042f: (b'cp1251', b'Macedonian', b'Cyrillic'),
+    0x043e: (b'iso8859_1', b'Malay_Malaysia', b'Western Europe & US'),
+    0x083e: (b'iso8859_1', b'Malay_Brunei_Darussalam', b'Western Europe & US'),
+    0x044e: (None, b'Marathi', b'Indic'),
+    0x0414: (b'iso8859_1', b'Norwegian_Bokmal', b'Western Europe & US'),
+    0x0814: (b'iso8859_1', b'Norwegian_Nynorsk', b'Western Europe & US'),
+    0x0415: (b'iso8859_2', b'Polish', b'Central Europe'),
+    0x0416: (b'iso8859_1', b'Portuguese_Brazilian', b'Western Europe & US'),
+    0x0816: (b'iso8859_1', b'Portuguese_Standard', b'Western Europe & US'),
+    0x0418: (b'iso8859_2', b'Romanian', b'Central Europe'),
+    0x0419: (b'cp1251', b'Russian', b'Cyrillic'),
+    0x044f: (None, b'Sanskrit', b'Indic'),
+    0x081a: (b'iso8859_2', b'Serbian_Latin', b'Central Europe'),
+    0x0c1a: (b'cp1251', b'Serbian_Cyrillic', b'Cyrillic'),
+    0x041b: (b'iso8859_2', b'Slovak', b'Central Europe'),
+    0x0424: (b'iso8859_2', b'Slovenian', b'Central Europe'),
+    0x040a: (b'iso8859_1', b'Spanish_Trad_Sort', b'Western Europe & US'),
+    0x080a: (b'iso8859_1', b'Spanish_Mexican', b'Western Europe & US'),
+    0x0c0a: (b'iso8859_1', b'Spanish_Modern_Sort', b'Western Europe & US'),
+    0x100a: (b'iso8859_1', b'Spanish_Guatemala', b'Western Europe & US'),
+    0x140a: (b'iso8859_1', b'Spanish_Costa_Rica', b'Western Europe & US'),
+    0x180a: (b'iso8859_1', b'Spanish_Panama', b'Western Europe & US'),
+    0x1c0a: (b'iso8859_1', b'Spanish_Dominican_Repub', b'Western Europe & US'),
+    0x200a: (b'iso8859_1', b'Spanish_Venezuela', b'Western Europe & US'),
+    0x240a: (b'iso8859_1', b'Spanish_Colombia', b'Western Europe & US'),
+    0x280a: (b'iso8859_1', b'Spanish_Peru', b'Western Europe & US'),
+    0x2c0a: (b'iso8859_1', b'Spanish_Argentina', b'Western Europe & US'),
+    0x300a: (b'iso8859_1', b'Spanish_Ecuador', b'Western Europe & US'),
+    0x340a: (b'iso8859_1', b'Spanish_Chile', b'Western Europe & US'),
+    0x380a: (b'iso8859_1', b'Spanish_Uruguay', b'Western Europe & US'),
+    0x3c0a: (b'iso8859_1', b'Spanish_Paraguay', b'Western Europe & US'),
+    0x400a: (b'iso8859_1', b'Spanish_Bolivia', b'Western Europe & US'),
+    0x440a: (b'iso8859_1', b'Spanish_El_Salvador', b'Western Europe & US'),
+    0x480a: (b'iso8859_1', b'Spanish_Honduras', b'Western Europe & US'),
+    0x4c0a: (b'iso8859_1', b'Spanish_Nicaragua', b'Western Europe & US'),
+    0x500a: (b'iso8859_1', b'Spanish_Puerto_Rico', b'Western Europe & US'),
+    0x0441: (b'iso8859_1', b'Swahili', b'Western Europe & US'),
+    0x041d: (b'iso8859_1', b'Swedish', b'Western Europe & US'),
+    0x081d: (b'iso8859_1', b'Swedish_Finland', b'Western Europe & US'),
+    0x0449: (None, b'Tamil', b'Indic'),
+    0x0444: (b'cp1251', b'Tatar', b'Cyrillic'),
+    0x041e: (b'iso8859_11', b'Thai', b'Thai'),
+    0x041f: (b'iso8859_9', b'Turkish', b'Turkish'),
+    0x0422: (b'cp1251', b'Ukrainian', b'Cyrillic'),
+    0x0420: (b'iso8859_6', b'Urdu', b'Arabic'),
+    0x0443: (b'iso8859_9', b'Uzbek_Latin', b'Turkish'),
+    0x0843: (b'cp1251', b'Uzbek_Cyrillic', b'Cyrillic'),
+    0x042a: (None, b'Vietnamese', b'Vietnamese')
 }
 
 
 class CHMFile:
     "A class to manage access to CHM files."
-    filename = ""
+    filename = b''
     file = None
-    title = ""
-    home = "/"
+    title = b''
+    home = b'/'
     index = None
     topics = None
     encoding = None
@@ -211,6 +211,9 @@ class CHMFile:
         if self.filename is not None:
             self.CloseCHM()
 
+        if isinstance(archiveName, str):
+            archiveName = archiveName.encode(sys.getfilesystemencoding())
+
         self.file = chmlib.chm_open(archiveName)
         if self.file is None:
             return 0
@@ -228,9 +231,9 @@ class CHMFile:
         if self.filename is not None:
             chmlib.chm_close(self.file)
             self.file = None
-            self.filename = ''
-            self.title = ""
-            self.home = "/"
+            self.filename = b''
+            self.title = b''
+            self.home = b'/'
             self.index = None
             self.topics = None
             self.encoding = None
@@ -245,7 +248,7 @@ class CHMFile:
         self.searchable = extra.is_searchable(self.file)
         self.lcid = None
 
-        result, ui = chmlib.chm_resolve_object(self.file, '/#SYSTEM')
+        result, ui = chmlib.chm_resolve_object(self.file, b'/#SYSTEM')
         if (result != chmlib.CHM_RESOLVE_SUCCESS):
             return 0
 
@@ -263,17 +266,17 @@ class CHMFile:
                 index += 2
                 cursor = buff[index] + (buff[index+1] * 256)
                 index += 2
-                self.topics = '/' + text[index:index+cursor-1]
+                self.topics = b'/' + text[index:index+cursor-1]
             elif (cursor == 1):
                 index += 2
                 cursor = buff[index] + (buff[index+1] * 256)
                 index += 2
-                self.index = '/' + text[index:index+cursor-1]
+                self.index = b'/' + text[index:index+cursor-1]
             elif (cursor == 2):
                 index += 2
                 cursor = buff[index] + (buff[index+1] * 256)
                 index += 2
-                self.home = '/' + text[index:index+cursor-1]
+                self.home = b'/' + text[index:index+cursor-1]
             elif (cursor == 3):
                 index += 2
                 cursor = buff[index] + (buff[index+1] * 256)
@@ -290,14 +293,14 @@ class CHMFile:
                 index += 2
                 tmp = text[index:index+cursor-1]
                 if not self.topics:
-                    tmp1 = '/' + tmp + '.hhc'
-                    tmp2 = '/' + tmp + '.hhk'
+                    tmp1 = b'/' + tmp + b'.hhc'
+                    tmp2 = b'/' + tmp + b'.hhk'
                     res1, ui1 = chmlib.chm_resolve_object(self.file, tmp1)
                     res2, ui2 = chmlib.chm_resolve_object(self.file, tmp2)
                     if not self.topics and res1 == chmlib.CHM_RESOLVE_SUCCESS:
-                        self.topics = '/' + tmp + '.hhc'
+                        self.topics = b'/' + tmp + b'.hhc'
                     if not self.index and res2 == chmlib.CHM_RESOLVE_SUCCESS:
-                        self.index = '/' + tmp + '.hhk'
+                        self.index = b'/' + tmp + b'.hhk'
             elif (cursor == 16):
                 index += 2
                 cursor = buff[index] + (buff[index+1] * 256)
@@ -381,11 +384,11 @@ class CHMFile:
             else:
                 offset = long(start)
 
-            content = ''
+            content = b''
             while size > 0:
                 (sz, chunk) = chmlib.chm_retrieve_object(self.file, ui, offset, size)
                 if sz == 0:
-                    return (0, '')
+                    return (0, b'')
                 content += chunk[:sz]
                 size -= sz
                 offset += sz
@@ -403,7 +406,7 @@ class CHMFile:
         This method will return a tuple, the first item
         indicating if the search results were partial, and the second
         item being a dictionary containing the results.'''
-        if text and text != '' and self.file:
+        if text and text != b'' and self.file:
             return extra.search(self.file, text, wholewords,
                                 titleonly)
         else:
@@ -420,7 +423,7 @@ class CHMFile:
         found, or if it is not possible to find the encoding, None is
         returned.'''
         if self.encoding:
-            vals = string.split(self.encoding, ',')
+            vals = string.split(self.encoding, b',')
             if len(vals) > 2:
                 try:
                     return charset_table[int(vals[2])]
@@ -451,7 +454,7 @@ class CHMFile:
         '''Internal method.
         Retrieves a string from the #STRINGS buffer.
         '''
-        next = string.find(text, '\x00', idx)
+        next = string.find(text, b'\x00', idx)
         chunk = text[idx:next]
         return chunk
 
@@ -460,7 +463,7 @@ class CHMFile:
         Checks the #WINDOWS file to see if it has any info that was
         not found in #SYSTEM (topics, index or default page.
         '''
-        result, ui = chmlib.chm_resolve_object(self.file, '/#WINDOWS')
+        result, ui = chmlib.chm_resolve_object(self.file, b'/#WINDOWS')
         if (result != chmlib.CHM_RESOLVE_SUCCESS):
             return -1
 
@@ -484,7 +487,7 @@ class CHMFile:
         idx_index = self.GetDWORD(buff, 0x64)
         dft_index = self.GetDWORD(buff, 0x68)
 
-        result, ui = chmlib.chm_resolve_object(self.file, '/#STRINGS')
+        result, ui = chmlib.chm_resolve_object(self.file, b'/#STRINGS')
         if (result != chmlib.CHM_RESOLVE_SUCCESS):
             return -5
 
@@ -494,15 +497,15 @@ class CHMFile:
 
         if (not self.topics):
             self.topics = self.GetString(text, toc_index)
-            if not self.topics.startswith("/"):
-                self.topics = "/" + self.topics
+            if not self.topics.startswith(b'/'):
+                self.topics = b'/' + self.topics
 
         if (not self.index):
             self.index = self.GetString(text, idx_index)
-            if not self.index.startswith("/"):
-                self.index = "/" + self.index
+            if not self.index.startswith(b'/'):
+                self.index = b'/' + self.index
 
         if (dft_index != 0):
             self.home = self.GetString(text, dft_index)
-            if not self.home.startswith("/"):
-                self.home = "/" + self.home
+            if not self.home.startswith(b'/'):
+                self.home = b'/' + self.home

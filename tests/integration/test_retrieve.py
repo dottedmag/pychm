@@ -14,15 +14,15 @@ def test_retrieve():
     f.LoadCHM("tests/integration/example.chm")
 
     tt = f.GetTopicsTree()
-    assert tt.startswith("<!DOCTYPE")
+    assert tt.startswith(b'<!DOCTYPE')
 
     assert f.GetIndex() is None
-    assert f.GetLCID() == ("iso8859_1", "Norwegian_Bokmal", "Western Europe & US")
+    assert f.GetLCID() == (b'iso8859_1', b'Norwegian_Bokmal', b'Western Europe & US')
     assert f.GetEncoding() is None
     assert f.IsSearchable() == True
 
-    _test_file(f, "/Documents/Table of Contents.hhc", 566, "<!DOCTYPE")
-    _test_file(f, "/page 1.html", 170, "<!DOCTYPE")
-    _test_file(f, "/page 2.html", 181, "<!DOCTYPE")
+    _test_file(f, b'/Documents/Table of Contents.hhc', 566, b'<!DOCTYPE')
+    _test_file(f, b'/page 1.html', 170, b'<!DOCTYPE')
+    _test_file(f, b'/page 2.html', 181, b'<!DOCTYPE')
 
     f.CloseCHM()
