@@ -11,6 +11,10 @@ def test_crash_in_callback():
     def enumerator(chm_file, ui, context):
         1/0
 
-    sut_chmlib.chm_enumerate(f.file, sut_chmlib.CHM_ENUMERATE_NORMAL, enumerator, None)
+    try:
+        sut_chmlib.chm_enumerate(f.file, sut_chmlib.CHM_ENUMERATE_NORMAL, enumerator, None)
+    except SystemError:
+        # We expect ZeroDivisionError to be propagated wrapped in SystemError
+        pass
 
     f.CloseCHM()
