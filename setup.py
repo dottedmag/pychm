@@ -13,13 +13,9 @@ setup(name="pychm",
       url="https://github.com/dottedmag/pychm",
       license="GPL",
       long_description=long_description,
-      py_modules=["chm.chm", "chm.chmlib"],
+      py_modules=["chm.chm", "chm.chmlib", "chm.extra"],
       ext_modules=[Extension("chm._chmlib",
                              ["chm/swig_chm.c"],
                              libraries=["chm"],
-                             extra_compile_args=["-DSWIG_COBJECT_TYPES"]),
-                   Extension("chm.extra",
-                             ["chm/extra.c"],
-                             extra_compile_args=["-D__PYTHON__"],
-                             libraries=["chm"])]
+                             extra_compile_args=["-DSWIG_COBJECT_TYPES"])]
       )

@@ -7,12 +7,4 @@ Jed Wing. The functionality is lifted into Python using SWIG.
 Additional requirements
 -----------------------
 
-* SWIG if you want to regenerate the sources from the interface file.
-
-Regenerating SWIG sources
--------------------------
-
-If you are feeling adventurous and want to re-generate the C source file from
-the SWIG interface file (src/swig_chm.i), then all you need to do is modify the
-setup.py file and substitute src/swig_chm.c with src/swig_chm.i
-(tested with SWIG 1.13.18).
+SWIG 3.0.x if you want to regenerate the sources from the interface file.
