@@ -247,12 +247,10 @@ class CHMFile:
 
         result, ui = chmlib.chm_resolve_object(self.file, '/#SYSTEM')
         if (result != chmlib.CHM_RESOLVE_SUCCESS):
-            sys.stderr.write('GetArchiveInfo: #SYSTEM does not exist\n')
             return 0
 
         size, text = chmlib.chm_retrieve_object(self.file, ui, 4l, ui.length)
         if (size == 0):
-            sys.stderr.write('GetArchiveInfo: file size = 0\n')
             return 0
 
         buff = array.array('B', text)
@@ -333,7 +331,6 @@ class CHMFile:
 
         size, text = chmlib.chm_retrieve_object(self.file, ui, 0l, ui.length)
         if (size == 0):
-            sys.stderr.write('GetTopicsTree: file size = 0\n')
             return None
         return text
 
@@ -352,7 +349,6 @@ class CHMFile:
 
         size, text = chmlib.chm_retrieve_object(self.file, ui, 0l, ui.length)
         if (size == 0):
-            sys.stderr.write('GetIndex: file size = 0\n')
             return None
         return text
 
