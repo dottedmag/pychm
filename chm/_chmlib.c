@@ -80,7 +80,7 @@ static PyObject *chmlib_chm_set_param(PyObject *self, PyObject *args) {
   // soon.
   if (param_type != 0) {
     PyErr_Format(PyExc_ValueError,
-                 "Expected CHM_PARAM_MAX_BLOCKS_CACHED (0), got %d",
+                 "Expected CHM_PARAM_MAX_BLOCKS_CACHED (0), got %ld",
                  param_type);
     return NULL;
   }
@@ -88,7 +88,7 @@ static PyObject *chmlib_chm_set_param(PyObject *self, PyObject *args) {
   // The value for CHM_PARAM_MAX_BLOCKS_CACHED parameter ultimately gets
   // assigned to Int32 cache_num_blocks
   if (param_val < 0 || param_val > 0x7fffffff) {
-    PyErr_Format(PyExc_ValueError, "Expected value 0..2147483647, got %d",
+    PyErr_Format(PyExc_ValueError, "Expected value 0..2147483647, got %ld",
                  param_val);
     return NULL;
   }
@@ -264,7 +264,7 @@ static PyObject *chmlib_chm_retrieve_object(PyObject *self, PyObject *args) {
 
   if (length < 0) {
     PyErr_Format(PyExc_ValueError,
-                 "Expected non-negative object length, got %d", length);
+                 "Expected non-negative object length, got %lld", length);
     return NULL;
   }
 
