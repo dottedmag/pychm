@@ -15,22 +15,38 @@
 # write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA
 
-'''
-extra
-'''
+from . import chmlib, _chmlib
 
-from . import chmlib
+_lang_objects = [
+    (b'/$FIftiMain', 0x7E),
+    (b'$WWKeywordLinks/BTree', 0x34),
+    (b'$WWAssociativeLinks/BTree', 0x34),
+]
 
 def get_lcid(f):
-    ret = chmlib.get_lcid(f)
-    if ret == -1:
-        return None
-    return ret
+    for (obj, offset) in _lang_objects:
+        (res, ui) = chmlib.chm_resolve_object(f, obj)
+        if res == chmlib.CHM_RESOLVE_SUCCESS:
+            (size, content) = chmlib.chm_retrieve_object(f, ui, offset, 4)
+            if size != 0:
+                return struct.unpack('<i', content)
+    return None
 
-def search(f, text, wholewords, titleonly):
-    matches = {}
-    partial = chmlib.search(f, text, wholewords, titleonly, matches)
-    return (partial, matches)
+def search(f, text, whole_words, titles_only):
+    if not is_searchable(f):
+        return False
+    d = {}
+    def cb(topic, url):
+        d[topic] = url
+    ret = _chmlib.search(f, text, whole_words, titles_only, cb)
+    return ret, d
 
-def is_searchable(f):
-    return chmlib.is_searchable(f)
+_search_objects = [b'/$FIftiMain', b'/#TOPICS', b'/#STRINGS', b'/#URLTBL',
+                   b'/#URLSTR']
+
+def is_searchable(chmfile):
+    for obj in _search_objects:
+        (res, _) = chmlib.chm_resolve_object(chmfile, obj)
+        if res == chmlib.CHM_RESOLVE_FAILURE:
+            return False
+    return True

@@ -13,8 +13,45 @@ def test_crash_in_callback():
 
     try:
         sut_chmlib.chm_enumerate(f.file, sut_chmlib.CHM_ENUMERATE_NORMAL, enumerator, None)
-    except SystemError:
-        # We expect ZeroDivisionError to be propagated wrapped in SystemError
+    except ZeroDivisionError:
         pass
 
     f.CloseCHM()
+
+def test_enumerate():
+    f = sut.CHMFile()
+    f.LoadCHM("tests/integration/example.chm")
+
+    ret = []
+
+    def enumerator(chm_file, ui, context):
+        ret.append(ui.path)
+
+    sut_chmlib.chm_enumerate(f.file, sut_chmlib.CHM_ENUMERATE_NORMAL, enumerator, None)
+
+    f.CloseCHM()
+
+    assert ret == [
+        b'/',
+        b'/Documents/',
+        b'/Documents/Table of Contents.hhc',
+        b'/page 1.html',
+        b'/page 2.html',
+    ]
+
+def test_enumerate_dir():
+    f = sut.CHMFile()
+    f.LoadCHM("tests/integration/example.chm")
+
+    ret = []
+
+    def enumerator(chm_file, ui, context):
+        ret.append(ui.path)
+
+    sut_chmlib.chm_enumerate_dir(f.file, b'/Documents/',
+                                 sut_chmlib.CHM_ENUMERATE_NORMAL, enumerator,
+                                 None)
+
+    f.CloseCHM()
+
+    assert ret == [b'/Documents/Table of Contents.hhc']

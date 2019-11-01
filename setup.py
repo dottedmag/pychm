@@ -14,8 +14,5 @@ setup(name="pychm",
       license="GPL",
       long_description=long_description,
       py_modules=["chm.chm", "chm.chmlib", "chm.extra"],
-      ext_modules=[Extension("chm._chmlib",
-                             ["chm/swig_chm.c"],
-                             libraries=["chm"],
-                             extra_compile_args=["-DSWIG_COBJECT_TYPES"])]
-      )
+      ext_modules=[Extension("chm._chmlib", ["chm/_chmlib.c", "chm/search.c"],
+                             libraries=["chm"])])

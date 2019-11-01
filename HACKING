@@ -1,10 +1,4 @@
 Hacking on pychm
 ================
 
-PyCHM uses the functionality implemented in chmlib, a C-based library written by
-Jed Wing. The functionality is lifted into Python using SWIG.
-
-Additional requirements
------------------------
-
-SWIG 3.0.x if you want to regenerate the sources from the interface file.
+PyCHM uses [chmlib](http://www.jedrea.com/chmlib/).

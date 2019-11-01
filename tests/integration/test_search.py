@@ -8,7 +8,6 @@ def test_search():
 
     assert partial == 1
     assert len(results) == 1
-    print(results)
     assert results[b'Untitled in index'] == b'page 2.html'
 
     f.CloseCHM()

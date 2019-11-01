@@ -1,3 +1,8 @@
+X.X.X
+  * Get rid of SWIG
+  * Python 3 support
+
+---------------------------------------------------------------------------
 0.8.4.1
   * New maintainer (Mikhail Gusarov)
   * Fix compilation under OS X and Windows.
