@@ -1,5 +1,9 @@
 import chm.chm as sut
 
+def test_retrieve_closed():
+    f = sut.CHMFile()
+    assert f.RetrieveObject(1, 0, 100) == (0, b'')
+
 def _test_file(f, filename, exp_size, exp_start):
     succ, ui = f.ResolveObject(filename)
     assert succ == 0
