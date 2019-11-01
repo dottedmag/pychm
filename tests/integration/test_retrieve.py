@@ -42,3 +42,11 @@ def test_retrieve_size_offset():
     assert content.startswith('head>')
 
     assert f.RetrieveObject(ui, 99, 10) == (10, 'head>\n  <t')
+
+def test_retrieve_overlong():
+    f = sut.CHMFile()
+    f.LoadCHM("tests/integration/example.chm")
+
+    succ, ui = f.ResolveObject(b'/page 1.html')
+
+    assert f.RetrieveObject(ui, 10, 170) == (0, b'')
