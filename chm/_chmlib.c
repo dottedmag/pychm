@@ -131,7 +131,7 @@ static int chmlib_chm_enumerator(struct chmFile *h, struct chmUnitInfo *ui,
 
   if (!PyLong_Check(result)) {
     PyErr_Format(PyExc_RuntimeError,
-                 "chm_enumerate callback is expected to return"
+                 "chm_enumerate callback is expected to return "
                  "integer or None, returned %R",
                  result);
     goto fail2;
