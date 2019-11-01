@@ -11,3 +11,15 @@ def test_search():
     assert results[b'Untitled in index'] == b'page 2.html'
 
     f.CloseCHM()
+
+def test_search_closed():
+    f = sut.CHMFile()
+    assert f.Search(b'hello') == None
+
+def test_search_none():
+    f = sut.CHMFile()
+    assert f.Search(None) == None
+
+def test_search_empty():
+    f = sut.CHMFile()
+    assert f.Search(b'') == None
