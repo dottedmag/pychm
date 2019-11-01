@@ -55,3 +55,60 @@ def test_enumerate_dir():
     f.CloseCHM()
 
     assert ret == [b'/Documents/Table of Contents.hhc']
+
+def test_enumerate_return_fail():
+    f = sut.CHMFile()
+    f.LoadCHM("tests/integration/example.chm")
+
+    ret = []
+    def enumerator(chm_file, ui, context):
+        ret.append(ui.path)
+        return sut_chmlib.CHM_ENUMERATOR_FAILURE
+
+    assert 0 == sut_chmlib.chm_enumerate(f.file,
+                                         sut_chmlib.CHM_ENUMERATE_NORMAL,
+                                         enumerator, None)
+
+    f.CloseCHM()
+
+    assert ret == [b'/']
+
+def test_enumerate_return_cont():
+    f = sut.CHMFile()
+    f.LoadCHM("tests/integration/example.chm")
+
+    ret = []
+    def enumerator(chm_file, ui, context):
+        ret.append(ui.path)
+        return sut_chmlib.CHM_ENUMERATOR_CONTINUE
+
+    assert 1 == sut_chmlib.chm_enumerate(f.file,
+                                         sut_chmlib.CHM_ENUMERATE_NORMAL,
+                                         enumerator, None)
+
+    f.CloseCHM()
+
+    assert ret == [
+        b'/',
+        b'/Documents/',
+        b'/Documents/Table of Contents.hhc',
+        b'/page 1.html',
+        b'/page 2.html',
+    ]
+
+def test_enumerate_return_stop():
+    f = sut.CHMFile()
+    f.LoadCHM("tests/integration/example.chm")
+
+    ret = []
+    def enumerator(chm_file, ui, context):
+        ret.append(ui.path)
+        return sut_chmlib.CHM_ENUMERATOR_SUCCESS
+
+    assert 1 == sut_chmlib.chm_enumerate(f.file,
+                                         sut_chmlib.CHM_ENUMERATE_NORMAL,
+                                         enumerator, None)
+
+    f.CloseCHM()
+
+    assert ret == [b'/']
