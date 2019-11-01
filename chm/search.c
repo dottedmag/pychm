@@ -1,7 +1,7 @@
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
 
-#include "search.h"
+#include "chmlib_search.h"
 #include <chm_lib.h>
 
 #define false 0
@@ -306,17 +306,6 @@ pychm_process_wlc(struct chmFile *chmfile, uint64_t wlc_count,
 
   return true;
 }
-
-typedef struct {
-  const char *file;
-  int offset;
-} Langrec;
-
-static Langrec lang_files[] = {{"/$FIftiMain", 0x7E},
-                               {"$WWKeywordLinks/BTree", 0x34},
-                               {"$WWAssociativeLinks/BTree", 0x34}};
-
-#define LANG_FILES_SIZE (sizeof(lang_files) / sizeof(Langrec))
 
 int search(struct chmFile *chmfile, const char *text, int whole_words,
            int titles_only, search_cb cb, void *context) {

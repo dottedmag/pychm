@@ -1,7 +1,7 @@
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
 
-#include "search.h"
+#include "chmlib_search.h"
 #include <chm_lib.h>
 
 #define CHMFILE_CAPSULE_NAME "C.chmFile"
