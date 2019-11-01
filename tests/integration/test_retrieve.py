@@ -39,9 +39,9 @@ def test_retrieve_size_offset():
 
     (size, content) = f.RetrieveObject(ui, 99)
     assert size == 71
-    assert content.startswith('head>')
+    assert content.startswith(b'head>')
 
-    assert f.RetrieveObject(ui, 99, 10) == (10, 'head>\n  <t')
+    assert f.RetrieveObject(ui, 99, 10) == (10, b'head>\n  <t')
 
 def test_retrieve_overlong():
     f = sut.CHMFile()

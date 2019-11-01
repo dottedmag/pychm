@@ -377,7 +377,7 @@ class CHMFile:
             if start == -1:
                 offset = 0
             else:
-                offset = long(start)
+                offset = start
             if length == -1:
                 size = ui.length - offset
             else:
@@ -394,7 +394,7 @@ class CHMFile:
 
             return (len(content), content)
         else:
-            return (0, '')
+            return (0, b'')
 
     def Search(self, text, wholewords=0, titleonly=0):
         '''Performs full-text search on the archive.

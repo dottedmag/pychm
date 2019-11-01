@@ -7,6 +7,12 @@
 #define CHMFILE_CAPSULE_NAME "C.chmFile"
 #define CHMFILE_CLOSED ((void *)0x1)
 
+#if PY_MAJOR_VERSION < 3
+#define YF "s"
+#else
+#define YF "y"
+#endif
+
 static struct chmFile *chmlib_get_chmfile(PyObject *chmfile_capsule) {
   if (!PyCapsule_IsValid(chmfile_capsule, CHMFILE_CAPSULE_NAME)) {
     PyErr_SetString(PyExc_ValueError, "Expected valid chmlib object");
@@ -37,7 +43,7 @@ static void chmlib_chmfile_capsule_destructor(PyObject *chmfile_capsule) {
 
 static PyObject *chmlib_chm_open(PyObject *self, PyObject *args) {
   const char *filename;
-  if (!PyArg_ParseTuple(args, "s:chmlib_chm_open", &filename))
+  if (!PyArg_ParseTuple(args, YF ":chmlib_chm_open", &filename))
     return NULL;
 
   struct chmFile *chmfile = chm_open(filename);
@@ -101,7 +107,7 @@ struct chmlib_enumerator_context {
 };
 
 static PyObject *chmUnitInfoTuple(struct chmUnitInfo *ui) {
-  return Py_BuildValue("(KKiis)", ui->start, ui->length, ui->space, ui->flags,
+  return Py_BuildValue("(KKii" YF ")", ui->start, ui->length, ui->space, ui->flags,
                        ui->path);
 }
 
@@ -153,7 +159,7 @@ static PyObject *chmlib_chm_enumerate_dir(PyObject *self, PyObject *args) {
   PyObject *context;
   int res;
 
-  if (!PyArg_ParseTuple(args, "OsiOO:chmlib_chm_enumerate", &chmfile_capsule,
+  if (!PyArg_ParseTuple(args, "O" YF "iOO:chmlib_chm_enumerate", &chmfile_capsule,
                         &prefix, &what, &enumerator, &context))
     return NULL;
 
@@ -221,7 +227,7 @@ static PyObject *chmlib_chm_resolve_object(PyObject *self, PyObject *args) {
   const char *path;
   struct chmUnitInfo ui;
 
-  if (!PyArg_ParseTuple(args, "Os:chmlib_chm_resolve_object", &chmfile_capsule,
+  if (!PyArg_ParseTuple(args, "O" YF ":chmlib_chm_resolve_object", &chmfile_capsule,
                         &path))
     return NULL;
 
@@ -297,7 +303,7 @@ typedef struct {
 static int _search_cb(const char *topic, const char *url, void *context) {
   search_ctx *ctx = context;
 
-  PyObject *arglist = Py_BuildValue("(ss)", topic, url);
+  PyObject *arglist = Py_BuildValue("(" YF YF ")", topic, url);
   PyObject *result = PyObject_CallObject(ctx->cb, arglist);
   Py_DECREF(arglist);
 
@@ -318,7 +324,7 @@ static PyObject *chmlib_search(PyObject *self, PyObject *args) {
   PyObject *pycb;
   int ret;
 
-  if (!PyArg_ParseTuple(args, "OsiiO:chmlib_search", &chmfile_capsule, &text,
+  if (!PyArg_ParseTuple(args, "O" YF "iiO:chmlib_search", &chmfile_capsule, &text,
                         &whole_words, &titles_only, &pycb))
     return NULL;
 
