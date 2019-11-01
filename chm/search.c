@@ -223,7 +223,7 @@ pychm_process_wlc(struct chmFile *chmfile, uint64_t wlc_count,
   uint64_t index = 0;
   unsigned char entry[TOPICS_ENTRY_LEN];
   unsigned char combuf[COMMON_BUF_LEN];
-  unsigned char *buffer = malloc(wlc_size);
+  unsigned char *buffer = malloc((size_t)wlc_size);
   char *url = NULL;
   char *topic = NULL;
 

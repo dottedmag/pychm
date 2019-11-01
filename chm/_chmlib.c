@@ -93,7 +93,7 @@ static PyObject *chmlib_chm_set_param(PyObject *self, PyObject *args) {
     return NULL;
   }
 
-  chm_set_param(chmfile, param_type, param_val);
+  chm_set_param(chmfile, (int)param_type, (int)param_val);
 
   Py_RETURN_NONE;
 }
@@ -141,7 +141,7 @@ static int chmlib_chm_enumerator(struct chmFile *h, struct chmUnitInfo *ui,
   if (ret == -1 && PyErr_Occurred() != NULL)
     goto fail2;
 
-  return ret;
+  return (int)ret;
 
 fail2:
   Py_DECREF(result);
@@ -268,7 +268,7 @@ static PyObject *chmlib_chm_retrieve_object(PyObject *self, PyObject *args) {
     return NULL;
   }
 
-  pybuf = PyBytes_FromStringAndSize(NULL, length);
+  pybuf = PyBytes_FromStringAndSize(NULL, (Py_ssize_t)length);
   if (!pybuf)
     return NULL;
 
@@ -289,7 +289,7 @@ static PyObject *chmlib_chm_retrieve_object(PyObject *self, PyObject *args) {
 
   if (res != length) {
     // error checking is not needed: pybuf is set to NULL in case of error
-    _PyBytes_Resize(&pybuf, res);
+    _PyBytes_Resize(&pybuf, (Py_ssize_t)res);
   }
 
   return pybuf;
