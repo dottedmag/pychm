@@ -129,7 +129,11 @@ static int chmlib_chm_enumerator(struct chmFile *h, struct chmUnitInfo *ui,
     return CHM_ENUMERATOR_CONTINUE;
   }
 
-  if (!PyLong_Check(result)) {
+  if (
+#if PY_MAJOR_VERSION < 3
+      !PyInt_Check(result) &&
+#endif
+      !PyLong_Check(result)) {
     PyErr_Format(PyExc_RuntimeError,
                  "chm_enumerate callback is expected to return "
                  "integer or None, returned %R",
