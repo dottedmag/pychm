@@ -26,3 +26,15 @@ def test_retrieve():
     _test_file(f, b'/page 2.html', 181, b'<!DOCTYPE')
 
     f.CloseCHM()
+
+def test_retrieve_size_offset():
+    f = sut.CHMFile()
+    f.LoadCHM("tests/integration/example.chm")
+
+    succ, ui = f.ResolveObject(b'/page 1.html')
+
+    (size, content) = f.RetrieveObject(ui, 99)
+    assert size == 71
+    assert content.startswith('head>')
+
+    assert f.RetrieveObject(ui, 99, 10) == (10, 'head>\n  <t')

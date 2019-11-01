@@ -374,14 +374,14 @@ class CHMFile:
         the amount of data to be read from the archive.
         '''
         if self.file and ui:
-            if length == -1:
-                size = ui.length
-            else:
-                size = length
             if start == -1:
                 offset = 0
             else:
                 offset = long(start)
+            if length == -1:
+                size = ui.length - offset
+            else:
+                size = length
 
             content = b''
             while size > 0:
