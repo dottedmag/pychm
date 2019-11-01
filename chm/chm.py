@@ -31,7 +31,6 @@
 from . import chmlib
 from . import extra
 import array
-import string
 import posixpath
 import sys
 
@@ -423,7 +422,7 @@ class CHMFile:
         found, or if it is not possible to find the encoding, None is
         returned.'''
         if self.encoding:
-            vals = string.split(self.encoding, b',')
+            vals = self.encoding.split(b',')
             if len(vals) > 2:
                 try:
                     return charset_table[int(vals[2])]
@@ -454,7 +453,7 @@ class CHMFile:
         '''Internal method.
         Retrieves a string from the #STRINGS buffer.
         '''
-        next = string.find(text, b'\x00', idx)
+        next = text.find(b'\x00', idx)
         chunk = text[idx:next]
         return chunk
 
