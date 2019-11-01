@@ -207,7 +207,7 @@ class CHMFile:
         such as the index file name and the topics file. It returns 1 on
         success, and 0 if it fails.
         '''
-        if self.filename is not None:
+        if self.filename != b'':
             self.CloseCHM()
 
         if isinstance(archiveName, str):
@@ -227,7 +227,7 @@ class CHMFile:
         This function will close the CHM file, if it is open. All variables
         are also reset.
         '''
-        if self.filename is not None:
+        if self.filename != b'':
             chmlib.chm_close(self.file)
             self.file = None
             self.filename = b''
