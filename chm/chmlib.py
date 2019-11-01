@@ -1,5 +1,6 @@
 from collections import namedtuple
 from . import _chmlib
+import sys
 
 # Python 2 compatibility
 try:
