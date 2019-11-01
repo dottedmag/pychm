@@ -9,7 +9,7 @@
 
 static struct chmFile *chmlib_get_chmfile(PyObject *chmfile_capsule) {
   if (!PyCapsule_IsValid(chmfile_capsule, CHMFILE_CAPSULE_NAME)) {
-    // FIXME Set exception
+    PyErr_SetString(PyExc_ValueError, "Expected valid chmlib object");
     return NULL;
   }
 
@@ -17,7 +17,7 @@ static struct chmFile *chmlib_get_chmfile(PyObject *chmfile_capsule) {
       chmfile_capsule, CHMFILE_CAPSULE_NAME);
 
   if (chmfile == CHMFILE_CLOSED) {
-    // FIXME handle closed file, set exception
+    PyErr_SetString(PyExc_RuntimeError, "chmlib object is closed");
     return NULL;
   }
 
@@ -73,14 +73,17 @@ static PyObject *chmlib_chm_set_param(PyObject *self, PyObject *args) {
   // It's the only available parameter, and it's not going to change any time
   // soon.
   if (param_type != 0) {
-    // FIXME Set exception
+    PyErr_Format(PyExc_ValueError,
+                 "Expected CHM_PARAM_MAX_BLOCKS_CACHED (0), got %d",
+                 param_type);
     return NULL;
   }
 
   // The value for CHM_PARAM_MAX_BLOCKS_CACHED parameter ultimately gets
   // assigned to Int32 cache_num_blocks
   if (param_val < 0 || param_val > 0x7fffffff) {
-    // FIXME Set exception
+    PyErr_Format(PyExc_ValueError, "Expected value 0..2147483647, got %d",
+                 param_val);
     return NULL;
   }
 
@@ -121,7 +124,10 @@ static int chmlib_chm_enumerator(struct chmFile *h, struct chmUnitInfo *ui,
   }
 
   if (!PyLong_Check(result)) {
-    // FIXME set error
+    PyErr_Format(PyExc_RuntimeError,
+                 "chm_enumerate callback is expected to return"
+                 "integer or None, returned %R",
+                 result);
     goto fail2;
   }
 
@@ -156,7 +162,8 @@ static PyObject *chmlib_chm_enumerate_dir(PyObject *self, PyObject *args) {
     return NULL;
 
   if (!PyCallable_Check(enumerator)) {
-    PyErr_SetString(PyExc_TypeError, "FIXME");
+    PyErr_Format(PyExc_TypeError, "A callable is expected for callback, got %R",
+                 enumerator);
     return NULL;
   }
 
@@ -190,7 +197,8 @@ static PyObject *chmlib_chm_enumerate(PyObject *self, PyObject *args) {
     return NULL;
 
   if (!PyCallable_Check(enumerator)) {
-    PyErr_SetString(PyExc_TypeError, "FIXME");
+    PyErr_Format(PyExc_TypeError, "A callable is expected for callback, got %R",
+                 enumerator);
     return NULL;
   }
 
@@ -249,7 +257,8 @@ static PyObject *chmlib_chm_retrieve_object(PyObject *self, PyObject *args) {
     return NULL;
 
   if (length < 0) {
-    // ...
+    PyErr_Format(PyExc_ValueError,
+                 "Expected non-negative object length, got %d", length);
     return NULL;
   }
 
@@ -318,7 +327,8 @@ static PyObject *chmlib_search(PyObject *self, PyObject *args) {
     return NULL;
 
   if (!PyCallable_Check(pycb)) {
-    PyErr_SetString(PyExc_TypeError, "FIXME");
+    PyErr_Format(PyExc_TypeError, "A callable is expected for callback, got %R",
+                 pycb);
     return NULL;
   }
 
