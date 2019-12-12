@@ -111,6 +111,20 @@ static PyObject *chmUnitInfoTuple(struct chmUnitInfo *ui) {
                        ui->flags, ui->path);
 }
 
+static void report_error(PyObject *type, const char *msg, PyObject *obj) {
+#if PY_MAJOR_VERSION < 3
+  PyObject *repr = PyObject_Repr(obj);
+  if (!repr)
+    PyErr_Format(type, "%s <NULL>", msg);
+  else {
+    PyErr_Format(type, "%s %s", msg, PyString_AsString(repr));
+    Py_DECREF(repr);
+  }
+#else
+  PyErr_Format(type, "%s %R", msg, obj);
+#endif
+}
+
 static int chmlib_chm_enumerator(struct chmFile *h, struct chmUnitInfo *ui,
                                  void *context) {
   struct chmlib_enumerator_context *ctx = context;
@@ -134,10 +148,11 @@ static int chmlib_chm_enumerator(struct chmFile *h, struct chmUnitInfo *ui,
       !PyInt_Check(result) &&
 #endif
       !PyLong_Check(result)) {
-    PyErr_Format(PyExc_RuntimeError,
+    report_error(PyExc_RuntimeError,
                  "chm_enumerate callback is expected to return "
-                 "integer or None, returned %R",
+                 "integer or None, returned",
                  result);
+
     goto fail2;
   }
 
@@ -173,7 +188,7 @@ static PyObject *chmlib_chm_enumerate_dir(PyObject *self, PyObject *args) {
     return NULL;
 
   if (!PyCallable_Check(enumerator)) {
-    PyErr_Format(PyExc_TypeError, "A callable is expected for callback, got %R",
+    report_error(PyExc_TypeError, "A callable is expected for callback, got",
                  enumerator);
     return NULL;
   }
@@ -208,7 +223,7 @@ static PyObject *chmlib_chm_enumerate(PyObject *self, PyObject *args) {
     return NULL;
 
   if (!PyCallable_Check(enumerator)) {
-    PyErr_Format(PyExc_TypeError, "A callable is expected for callback, got %R",
+    report_error(PyExc_TypeError, "A callable is expected for callback, got",
                  enumerator);
     return NULL;
   }
@@ -338,7 +353,7 @@ static PyObject *chmlib_search(PyObject *self, PyObject *args) {
     return NULL;
 
   if (!PyCallable_Check(pycb)) {
-    PyErr_Format(PyExc_TypeError, "A callable is expected for callback, got %R",
+    report_error(PyExc_TypeError, "A callable is expected for callback, got",
                  pycb);
     return NULL;
   }
