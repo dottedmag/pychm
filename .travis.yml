@@ -1,0 +1,30 @@
+os: linux
+addons:
+  apt:
+    update: true
+    packages:
+      - libchm-dev
+language: python
+python:
+  - "2.7"
+  - "3.5"
+  - "3.6"
+  - "3.7"
+  - "3.8"
+script: scripts/travis-run.sh
+jobs:
+  include:
+    - name: macOS + Python 3
+      os: osx
+      osx_image: xcode11.2
+      language: shell
+      addons:
+        homebrew:
+          packages:
+            - python3
+            - chmlib
+    - name: Windows + Python 3.7
+      os: windows
+      language: shell
+      before_install: scripts/win-travis-before-install.sh
+      script: scripts/win-travis-run.sh
