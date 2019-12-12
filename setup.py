@@ -4,7 +4,7 @@ with open("README", "r") as fh:
     long_description = fh.read()
 
 setup(name="pychm",
-      version="0.8.5+git",
+      version="0.8.6",
       description="Python package to handle CHM files",
       author="Rubens Ramos",
       author_email="rubensr@users.sourceforge.net",

@@ -1,4 +1,7 @@
-X.X.X
+0.8.6
+  * Fix crash on Windows, Linux introduced in 0.8.5 (#7)
+  * Restore compatibility with Python 2.7
+    (malformed runtime error messages, compilation warnings) (#6)
 
 ---------------------------------------------------------------------------
 0.8.5
