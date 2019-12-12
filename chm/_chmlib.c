@@ -368,6 +368,7 @@ static PyMethodDef chmlib_methods[] = {
     {"chm_retrieve_object", chmlib_chm_retrieve_object, METH_VARARGS,
      "Get the object's content"},
     {"search", chmlib_search, METH_VARARGS, "Search the CHM"},
+    {NULL},
 };
 
 #if PY_MAJOR_VERSION < 3
