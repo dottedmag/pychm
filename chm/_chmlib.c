@@ -107,8 +107,8 @@ struct chmlib_enumerator_context {
 };
 
 static PyObject *chmUnitInfoTuple(struct chmUnitInfo *ui) {
-  return Py_BuildValue("(KKii" YF ")", ui->start, ui->length, ui->space, ui->flags,
-                       ui->path);
+  return Py_BuildValue("(KKii" YF ")", ui->start, ui->length, ui->space,
+                       ui->flags, ui->path);
 }
 
 static int chmlib_chm_enumerator(struct chmFile *h, struct chmUnitInfo *ui,
@@ -163,8 +163,9 @@ static PyObject *chmlib_chm_enumerate_dir(PyObject *self, PyObject *args) {
   PyObject *context;
   int res;
 
-  if (!PyArg_ParseTuple(args, "O" YF "iOO:chmlib_chm_enumerate", &chmfile_capsule,
-                        &prefix, &what, &enumerator, &context))
+  if (!PyArg_ParseTuple(args, "O" YF "iOO:chmlib_chm_enumerate",
+                        &chmfile_capsule, &prefix, &what, &enumerator,
+                        &context))
     return NULL;
 
   struct chmFile *chmfile = chmlib_get_chmfile(chmfile_capsule);
@@ -231,8 +232,8 @@ static PyObject *chmlib_chm_resolve_object(PyObject *self, PyObject *args) {
   const char *path;
   struct chmUnitInfo ui;
 
-  if (!PyArg_ParseTuple(args, "O" YF ":chmlib_chm_resolve_object", &chmfile_capsule,
-                        &path))
+  if (!PyArg_ParseTuple(args, "O" YF ":chmlib_chm_resolve_object",
+                        &chmfile_capsule, &path))
     return NULL;
 
   struct chmFile *chmfile = chmlib_get_chmfile(chmfile_capsule);
@@ -328,8 +329,8 @@ static PyObject *chmlib_search(PyObject *self, PyObject *args) {
   PyObject *pycb;
   int ret;
 
-  if (!PyArg_ParseTuple(args, "O" YF "iiO:chmlib_search", &chmfile_capsule, &text,
-                        &whole_words, &titles_only, &pycb))
+  if (!PyArg_ParseTuple(args, "O" YF "iiO:chmlib_search", &chmfile_capsule,
+                        &text, &whole_words, &titles_only, &pycb))
     return NULL;
 
   struct chmFile *chmfile = chmlib_get_chmfile(chmfile_capsule);
