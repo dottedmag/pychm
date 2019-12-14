@@ -4,6 +4,11 @@
 #include "chmlib_search.h"
 #include <chm_lib.h>
 
+#ifdef _MSC_VER
+#define strcasecmp stricmp
+#define strncasecmp strnicmp
+#endif
+
 #define false 0
 #define true 1
 
