@@ -2,12 +2,6 @@ from collections import namedtuple
 from . import _chmlib
 import sys
 
-# Python 2 compatibility
-try:
-    unicode
-except:
-    unicode = str
-
 CHM_UNCOMPRESSED = 0
 CHM_COMPRESSED = 1
 
@@ -15,7 +9,7 @@ chmUnitInfo = namedtuple('chmUnitInfo',
                          ['start', 'length', 'space', 'flags', 'path'])
 
 def chm_open(filename):
-    if isinstance(filename, unicode):
+    if isinstance(filename, str):
         filename = filename.encode(sys.getfilesystemencoding())
     return _chmlib.chm_open(filename)
 

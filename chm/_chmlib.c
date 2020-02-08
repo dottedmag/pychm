@@ -8,9 +8,7 @@
 #define CHMFILE_CLOSED ((void *)0x1)
 
 #if PY_MAJOR_VERSION < 3
-#define YF "s"
-#else
-#define YF "y"
+# error pychm does not support Python 2
 #endif
 
 static struct chmFile *chmlib_get_chmfile(PyObject *chmfile_capsule) {
@@ -43,7 +41,7 @@ static void chmlib_chmfile_capsule_destructor(PyObject *chmfile_capsule) {
 
 static PyObject *chmlib_chm_open(PyObject *self, PyObject *args) {
   const char *filename;
-  if (!PyArg_ParseTuple(args, YF ":chmlib_chm_open", &filename))
+  if (!PyArg_ParseTuple(args, "y:chmlib_chm_open", &filename))
     return NULL;
 
   struct chmFile *chmfile = chm_open(filename);
@@ -107,22 +105,8 @@ struct chmlib_enumerator_context {
 };
 
 static PyObject *chmUnitInfoTuple(struct chmUnitInfo *ui) {
-  return Py_BuildValue("(KKii" YF ")", ui->start, ui->length, ui->space,
+  return Py_BuildValue("(KKiiy)", ui->start, ui->length, ui->space,
                        ui->flags, ui->path);
-}
-
-static void report_error(PyObject *type, const char *msg, PyObject *obj) {
-#if PY_MAJOR_VERSION < 3
-  PyObject *repr = PyObject_Repr(obj);
-  if (!repr)
-    PyErr_Format(type, "%s <NULL>", msg);
-  else {
-    PyErr_Format(type, "%s %s", msg, PyString_AsString(repr));
-    Py_DECREF(repr);
-  }
-#else
-  PyErr_Format(type, "%s %R", msg, obj);
-#endif
 }
 
 static int chmlib_chm_enumerator(struct chmFile *h, struct chmUnitInfo *ui,
@@ -143,14 +127,10 @@ static int chmlib_chm_enumerator(struct chmFile *h, struct chmUnitInfo *ui,
     return CHM_ENUMERATOR_CONTINUE;
   }
 
-  if (
-#if PY_MAJOR_VERSION < 3
-      !PyInt_Check(result) &&
-#endif
-      !PyLong_Check(result)) {
-    report_error(PyExc_RuntimeError,
+  if (!PyLong_Check(result)) {
+      PyErr_Format(PyExc_RuntimeError,
                  "chm_enumerate callback is expected to return "
-                 "integer or None, returned",
+                 "integer or None, returned %R",
                  result);
 
     goto fail2;
@@ -178,7 +158,7 @@ static PyObject *chmlib_chm_enumerate_dir(PyObject *self, PyObject *args) {
   PyObject *context;
   int res;
 
-  if (!PyArg_ParseTuple(args, "O" YF "iOO:chmlib_chm_enumerate",
+  if (!PyArg_ParseTuple(args, "OyiOO:chmlib_chm_enumerate",
                         &chmfile_capsule, &prefix, &what, &enumerator,
                         &context))
     return NULL;
@@ -188,7 +168,7 @@ static PyObject *chmlib_chm_enumerate_dir(PyObject *self, PyObject *args) {
     return NULL;
 
   if (!PyCallable_Check(enumerator)) {
-    report_error(PyExc_TypeError, "A callable is expected for callback, got",
+    PyErr_Format(PyExc_TypeError, "A callable is expected for callback, got %R",
                  enumerator);
     return NULL;
   }
@@ -223,7 +203,7 @@ static PyObject *chmlib_chm_enumerate(PyObject *self, PyObject *args) {
     return NULL;
 
   if (!PyCallable_Check(enumerator)) {
-    report_error(PyExc_TypeError, "A callable is expected for callback, got",
+    PyErr_Format(PyExc_TypeError, "A callable is expected for callback, got %R",
                  enumerator);
     return NULL;
   }
@@ -247,7 +227,7 @@ static PyObject *chmlib_chm_resolve_object(PyObject *self, PyObject *args) {
   const char *path;
   struct chmUnitInfo ui;
 
-  if (!PyArg_ParseTuple(args, "O" YF ":chmlib_chm_resolve_object",
+  if (!PyArg_ParseTuple(args, "Oy:chmlib_chm_resolve_object",
                         &chmfile_capsule, &path))
     return NULL;
 
@@ -323,7 +303,7 @@ typedef struct {
 static int _search_cb(const char *topic, const char *url, void *context) {
   search_ctx *ctx = context;
 
-  PyObject *arglist = Py_BuildValue("(" YF YF ")", topic, url);
+  PyObject *arglist = Py_BuildValue("(yy)", topic, url);
   PyObject *result = PyObject_CallObject(ctx->cb, arglist);
   Py_DECREF(arglist);
 
@@ -344,7 +324,7 @@ static PyObject *chmlib_search(PyObject *self, PyObject *args) {
   PyObject *pycb;
   int ret;
 
-  if (!PyArg_ParseTuple(args, "O" YF "iiO:chmlib_search", &chmfile_capsule,
+  if (!PyArg_ParseTuple(args, "OyiiO:chmlib_search", &chmfile_capsule,
                         &text, &whole_words, &titles_only, &pycb))
     return NULL;
 
@@ -353,7 +333,7 @@ static PyObject *chmlib_search(PyObject *self, PyObject *args) {
     return NULL;
 
   if (!PyCallable_Check(pycb)) {
-    report_error(PyExc_TypeError, "A callable is expected for callback, got",
+    PyErr_Format(PyExc_TypeError, "A callable is expected for callback, got %R",
                  pycb);
     return NULL;
   }
@@ -387,16 +367,8 @@ static PyMethodDef chmlib_methods[] = {
     {NULL},
 };
 
-#if PY_MAJOR_VERSION < 3
-
-void init_chmlib(void) { Py_InitModule("_chmlib", chmlib_methods); }
-
-#else
-
 static struct PyModuleDef chmlib_module = {
     PyModuleDef_HEAD_INIT, "_chmlib", NULL, -1, chmlib_methods,
 };
 
 PyMODINIT_FUNC PyInit__chmlib(void) { return PyModule_Create(&chmlib_module); }
-
-#endif
