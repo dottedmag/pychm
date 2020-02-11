@@ -9,7 +9,7 @@ dl_chmlib() {
 }
 
 build_chmlib() {
-  cmd.exe /C scripts\\build-chmlib.bat
+  cmd.exe //C scripts\\build-chmlib.bat
 }
 
 dl_chmlib
