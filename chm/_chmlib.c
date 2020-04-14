@@ -352,7 +352,7 @@ static PyObject *chmlib_search(PyObject *self, PyObject *args) {
 
 static PyMethodDef chmlib_methods[] = {
     {"chm_open", chmlib_chm_open, METH_VARARGS, "Open a CHM file"},
-    {"chm_close", chmlib_chm_close, METH_VARARGS, "Open the CHM file"},
+    {"chm_close", chmlib_chm_close, METH_VARARGS, "Close the CHM file"},
     {"chm_enumerate", chmlib_chm_enumerate, METH_VARARGS,
      "Enumerate objects in CHM file"},
     {"chm_set_param", chmlib_chm_set_param, METH_VARARGS,
