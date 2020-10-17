@@ -3,7 +3,7 @@ PyCHM
 
 PyCHM is a Python library to manipulate CHM files (Microsoft HTML Help).
 
-This library supports Python 3.5+. It is in a maintenance mode and accepts only
+This library supports Python 3.6+. It is in a maintenance mode and accepts only
 security and bug fixes.
 
 API
