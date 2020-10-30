@@ -1,4 +1,7 @@
 os: linux
+arch:
+   - ppc64le
+   - amd64
 addons:
   apt:
     update: true
