@@ -5,7 +5,7 @@ Requirements
 ------------
 
 * Python >= 2.2
-* chmlib
+* chmlib (https://github.com/jedwing/CHMLib)
 * A working C compiler
 
 Installation from sources
