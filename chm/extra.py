@@ -16,6 +16,7 @@
 # Boston, MA 02111-1307, USA
 
 from . import chmlib, _chmlib
+import struct
 
 _lang_objects = [
     (b'/$FIftiMain', 0x7E),
