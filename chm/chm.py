@@ -33,6 +33,7 @@ from . import extra
 import array
 import posixpath
 import sys
+import typing
 
 charset_table = {
     0: b'iso8859_1',  # ANSI_CHARSET
@@ -508,3 +509,169 @@ class CHMFile:
             self.home = self.GetString(text, dft_index)
             if not self.home.startswith(b'/'):
                 self.home = b'/' + self.home
+
+
+class CHMCollection:
+    '''A class to access a CHM archive split among several files.
+    A .CHM file may have one or more similarly named companion files,
+    ending in .CHI, .CHW, .CHQ, and .CHS, among others. Depending on
+    how the archive's objects are split among the files, it may be
+    necessary to load these companion files in order to successfully
+    certain data, such as the topics tree.
+    '''
+    files: typing.List[CHMFile] = []
+    title = b''
+    home = b'/'
+    index = None
+    topics = None
+    encoding = None
+    lcid = None
+    binaryindex = None
+
+    def LoadFiles(self, *archiveNames):
+        '''Load the files that together make a CHM archive.
+        This function will also call GetArchiveInfo on individual files
+        to obtain information such as the index file name and the topics
+        file. It returns 1 on success, and 0 if it fails. In the event
+        that this information is present but different in multiple
+        files, the last file specified for loading has priority.
+        '''
+        self.CloseFiles()
+
+        for name in archiveNames:
+            file = CHMFile()
+            status = file.LoadCHM(name)
+            if status == 0:
+                self.CloseFiles()
+                return 0
+
+            self.files.append(file)
+
+        self.GetArchiveInfo()
+
+        return 1
+
+    def CloseFiles(self):
+        '''Closes the CHM archive.
+        This function will close all component files. All variables are
+        also reset.
+        '''
+        for file in self.files:
+            file.CloseCHM()
+        self.files = []
+        self.title = b''
+        self.home = b'/'
+        self.index = None
+        self.topics = None
+        self.encoding = None
+        self.lcid = None
+        self.binaryindex = None
+
+    def GetArchiveInfo(self):
+        '''Obtains information on the CHM archive.
+        This function checks the /#SYSTEM file inside each component
+        file to obtain the index, home page, topics, encoding, and
+        title. It is called from LoadFiles.
+        '''
+        for file in self.files:
+            file.GetArchiveInfo()
+            if file.topics:
+                self.topics = file.topics
+            if file.index:
+                self.index = file.index
+            if file.home:
+                self.home = file.home
+            if file.title:
+                self.title = file.title
+            if file.lcid:
+                self.lcid = file.lcid
+            if file.encoding:
+                self.encoding = file.encoding
+
+    def GetTopicsTree(self):
+        '''Reads and returns the topics tree.
+        This function reads and returns the topics tree file contents
+        for the CHM archive, regardless if the topics tree location and
+        topics tree contents are spread across multiple files.
+        '''
+        if not self.topics:
+            return None
+
+        tree = None
+
+        for file in self.files:
+            res, ui = chmlib.chm_resolve_object(file.file, self.topics)
+            if res != chmlib.CHM_RESOLVE_SUCCESS:
+                continue
+            size, txt = chmlib.chm_retrieve_object(file.file, ui, 0, ui.length)
+            if size == 0:
+                continue
+            tree = txt
+
+        return tree
+
+    def GetIndex(self):
+        '''Reads and returns the index tree.
+        This function reads and returns the index tree file contents
+        for the CHM archive, regardless if the index tree location and
+        index tree contents are spread across multiple files.
+        '''
+        if not self.index:
+            return None
+
+        tree = None
+
+        for file in self.files:
+            res, ui = chmlib.chm_resolve_object(file.file, self.index)
+            if res != chmlib.CHM_RESOLVE_SUCCESS:
+                continue
+            size, txt = chmlib.chm_retrieve_object(file.file, ui, 0, ui.length)
+            if size == 0:
+                continue
+            tree = txt
+
+        return tree
+
+    def ResolveObject(self, document):
+        '''Tried to locate a document in the archive.
+        This function tries to locate the document in the loaded files.
+        It returns a tuple where the first element is zero if the
+        function was successful, the second is the UnitInfo for that
+        document, and the third is the CHMFile the document can be
+        found in. The UnitInfo is used to retrieve the contents.
+        If the document exists in multiple files, the last file in
+        LoadFiles takes priority.
+        '''
+        obj = (1, None, None)
+
+        for file in self.files:
+            res, ui = file.ResolveObject(document)
+            if res == 0:
+                obj = (res, ui, file)
+
+        return obj
+
+    def GetEncoding(self):
+        '''Returns a string that can be used with the codecs python package
+        to encode or decode the files in the chm archive. If an error is
+        found, or if it is not possible to find the encoding, None is
+        returned.'''
+        name = None
+
+        for file in self.files:
+            fileEncoding = file.GetEncoding()
+            if fileEncoding:
+                name = fileEncoding
+
+        return name
+    
+    def GetLCID(self):
+        '''Returns the archive Locale ID'''
+        locale = None
+
+        for file in self.files:
+            fileLocale = file.GetLCID()
+            if fileLocale:
+                locale = fileLocale
+
+        return locale
