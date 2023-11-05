@@ -139,3 +139,18 @@ def test_single2():
     assert collection.LoadFiles(PATH2) == 1
     assert collection.GetIndex() is None
     assert collection.GetTopicsTree() is not None
+
+def test_close():
+    '''Verify all files in a collection get closed.'''
+    collection = sut.CHMCollection()
+    assert collection.LoadFiles(PATH1, PATH2) == 1
+    files = collection.files
+    collection.CloseFiles()
+    assert files[0].file is None
+    assert files[1].file is None
+
+def test_open_failure():
+    '''Verify a collection remains unloaded if one file doesn't open.'''
+    collection = sut.CHMCollection()
+    assert collection.LoadFiles(PATH1, 'nonexistent.chm', PATH2) == 0
+    assert collection.files == []
