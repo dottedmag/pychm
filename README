@@ -25,3 +25,10 @@ The chm package contains four modules:
 
 * chm._chmlib: Low level wrappers around the chmlib API (C part).
   This module is unstable and subject to change without notice.
+
+Legal
+-----
+
+This is a hobbyist project.
+
+Please [mail us](mailto:ce@dottedmag.net) if you need help with CE mark.
